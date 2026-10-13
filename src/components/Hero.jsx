@@ -166,7 +166,8 @@ export function Hero({ onNavigate, onOpenBooking }) {
               </div>
               <div className="reassurance-text">
                 <CheckCircle2 size={16} className="reassurance-check" />
-                <span>Audit initial offert (30 min) • Réponse sous 24h chrono • Lomé & International</span>
+                <span className="reassurance-text-desktop">Audit initial offert (30 min) • Réponse sous 24h chrono • Lomé & International</span>
+                <span className="reassurance-text-mobile">Laurent G-M Manouaba</span>
               </div>
             </div>
           </div>
@@ -376,6 +377,12 @@ export function Hero({ onNavigate, onOpenBooking }) {
           .reassurance-check {
             color: #0d9488;
             flex-shrink: 0;
+          }
+          .reassurance-text-desktop {
+            display: inline;
+          }
+          .reassurance-text-mobile {
+            display: none !important;
           }
 
           /* ---------------- Composition Circulaire à Droite ---------------- */
@@ -707,8 +714,8 @@ export function Hero({ onNavigate, onOpenBooking }) {
             display: none;
           }
           .reassurance-text {
-            font-size: 0.84rem;
-            color: #94a3b8;
+            font-size: 0.88rem;
+            color: #e2e8f0;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -716,6 +723,15 @@ export function Hero({ onNavigate, onOpenBooking }) {
           .reassurance-check {
             color: #00f5a0;
             flex-shrink: 0;
+          }
+          .reassurance-text-desktop {
+            display: none !important;
+          }
+          .reassurance-text-mobile {
+            display: inline !important;
+            font-weight: 600;
+            color: #f1f5f9;
+            letter-spacing: 0.01em;
           }
         }
       `}</style>
