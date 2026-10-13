@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Page d'Accueil Principale -->
+  <url>
+    <loc>https://laurentmanouaba.pro/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://laurentmanouaba.pro/assets/avatar-suit.png</image:loc>
+      <image:title>Laurent G-M Manouaba - Consultant en Innovations Technologiques &amp; IA</image:title>
+      <image:caption>Cabinet de conseil stratégique en technologies de rupture, intelligence artificielle et rentabilité opérationnelle.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 12 Services & Expertises Technologiques -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#services</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Prix, Formules & Grilles d'Intervention -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#pricing</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- À Propos de Laurent Manouaba : Parcours, Vision & Réseau -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#about</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://laurentmanouaba.pro/assets/workshop-meeting.jpg</image:loc>
+      <image:title>Sessions R&amp;D et Ateliers Collaboratifs Laurent Manouaba</image:title>
+    </image:image>
+  </url>
+
+  <!-- Blog & Publications Scientifiques / Prospective -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#blog</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact Officiel & Prise de Rendez-vous -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#contact</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

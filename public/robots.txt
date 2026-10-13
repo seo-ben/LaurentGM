@@ -1,0 +1,12 @@
+# ==============================================================================
+# ROBOTS.TXT - Laurent G-M Manouaba | Cabinet de Conseil Technologique & IA
+# ==============================================================================
+
+User-agent: *
+Allow: /
+
+# Directives d'indexation pour tous les moteurs (Google, Bing, Yandex, DuckDuckGo)
+Crawl-delay: 1
+
+# Sitemap officiel pour l'indexation accélérée
+Sitemap: https://laurentmanouaba.pro/sitemap.xml
