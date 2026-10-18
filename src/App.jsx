@@ -7,6 +7,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
+import { RealisationsPage } from './pages/RealisationsPage';
 import { PricingPage } from './pages/PricingPage';
 import { AboutPage } from './pages/AboutPage';
 import { BlogPage } from './pages/BlogPage';
@@ -20,6 +21,10 @@ const PAGE_SEO = {
   services: {
     title: "12 Services & Expertises Technologiques | Laurent G-M Manouaba",
     description: "Catalogue complet des 12 services : IA & Machine Learning, Big Data, R&D de rupture, audit d'architecture et stratégie de rentabilité opérationnelle."
+  },
+  realisations: {
+    title: "Galerie & Réalisations de Terrain | Laurent G-M Manouaba",
+    description: "Portfolio photographique et études de cas réels : ateliers pour dirigeants, audits stratégiques de rentabilité, R&D et keynotes de Laurent G-M Manouaba."
   },
   pricing: {
     title: "Prix & Formules de Consultance 100% Transparentes | Laurent G-M Manouaba",
@@ -123,6 +128,9 @@ export default function App() {
         )}
         {currentPage === 'services' && (
           <ServicesPage onOpenBooking={handleOpenBooking} />
+        )}
+        {currentPage === 'realisations' && (
+          <RealisationsPage onOpenBooking={handleOpenBooking} />
         )}
         {currentPage === 'pricing' && (
           <PricingPage onOpenBooking={handleOpenBooking} />

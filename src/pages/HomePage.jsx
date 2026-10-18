@@ -6,6 +6,7 @@ import { MetricsTicker } from '../components/MetricsTicker';
 import { Hero } from '../components/Hero';
 
 import { WhyUsBento } from '../components/WhyUsBento';
+import { RealisationsSection } from '../components/RealisationsSection';
 
 export function HomePage({ onNavigate, onOpenBooking }) {
   return (
@@ -18,6 +19,9 @@ export function HomePage({ onNavigate, onOpenBooking }) {
 
       {/* Pourquoi confier votre transformation technologique au cabinet - Bento Grid d'Élite */}
       <WhyUsBento onNavigate={onNavigate} />
+
+      {/* Galerie des Réalisations de Laurent Manouaba sur le terrain */}
+      <RealisationsSection onNavigate={onNavigate} onOpenBooking={onOpenBooking} />
 
 
       {/* Call to action section - Direct sur le fond sans carte */}

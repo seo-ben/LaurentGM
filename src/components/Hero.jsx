@@ -175,25 +175,6 @@ export function Hero({ onNavigate, onOpenBooking }) {
           {/* Colonne Droite : Composition Circulaire avec Slider dans le Rond (DESKTOP UNIQUEMENT) */}
           <div className="hero-circle-col desktop-only">
             <div className="blueprint-circle-stage">
-              {/* Titres / Onglets alignés sur UNE SEULE LIGNE directement au-dessus du rond */}
-              <div className="circle-tabs-row">
-                {slides.map((slide, index) => {
-                  const isActive = index === currentSlide;
-                  return (
-                    <button
-                      key={slide.id}
-                      type="button"
-                      onClick={() => setCurrentSlide(index)}
-                      className={`circle-tab-btn ${isActive ? 'active' : ''}`}
-                      aria-label={`Afficher ${slide.label}`}
-                    >
-                      <span className="circle-tab-dot" />
-                      <span>{slide.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
               {/* Anneau guide circulaire extérieur */}
               <div className="outer-guide-ring" />
 
@@ -206,13 +187,13 @@ export function Hero({ onNavigate, onOpenBooking }) {
               {/* Flèche oblique & 4 points d'ancrage en bas à droite */}
               <div className="blueprint-arrow-decor">
                 <div style={{ color: '#0f172a', opacity: 0.85 }}>
-                  <ArrowUpRight size={32} strokeWidth={2.6} />
+                  <ArrowUpRight size={38} strokeWidth={2.6} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 1 }} />
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.7 }} />
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.5 }} />
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.3 }} />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 1 }} />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.7 }} />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.5 }} />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0d9488', opacity: 0.3 }} />
                 </div>
               </div>
 
@@ -272,18 +253,19 @@ export function Hero({ onNavigate, onOpenBooking }) {
           .hero-container {
             position: relative;
             z-index: 2;
+            max-width: 1260px;
           }
 
           .hero-grid {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 48px;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
             align-items: center;
           }
 
           .hero-main-title {
             font-family: var(--font-heading);
-            font-size: clamp(2.4rem, 4.6vw, 3.9rem);
+            font-size: clamp(2.4rem, 4.4vw, 3.8rem);
             font-weight: 900;
             line-height: 1.14;
             color: #0f172a;
@@ -390,110 +372,55 @@ export function Hero({ onNavigate, onOpenBooking }) {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
           }
 
           .blueprint-circle-stage {
             position: relative;
             width: 100%;
-            max-width: 460px;
-            height: 475px;
-          }
-
-          /* Onglets alignés sur UNE SEULE LIGNE au-dessus du rond */
-          .circle-tabs-row {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            gap: 6px;
-            background-color: #ffffff;
-            padding: 5px 8px;
-            border-radius: 9999px;
-            border: 1px solid rgba(15, 23, 42, 0.1);
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-            z-index: 10;
-          }
-
-          .circle-tab-btn {
-            border: none;
-            background: transparent;
-            color: #64748b;
-            font-weight: 600;
-            font-size: 0.74rem;
-            padding: 5px 12px;
-            border-radius: 9999px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            transition: all 0.22s ease;
-          }
-          .circle-tab-btn:hover {
-            color: #0f172a;
-            background-color: rgba(15, 23, 42, 0.04);
-          }
-          /* Sélectionné : gris sobre / blanc sombre (et non noir brut) */
-          .circle-tab-btn.active {
-            background-color: #334155;
-            color: #ffffff;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(51, 65, 85, 0.3);
-          }
-          .circle-tab-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: currentColor;
-          }
-          .circle-tab-btn.active .circle-tab-dot {
-            background-color: #00f5a0;
+            max-width: 540px;
+            height: 500px;
           }
 
           .outer-guide-ring {
             position: absolute;
-            top: 48px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            top: 0;
+            left: calc(50% - 250px);
+            width: 500px;
+            height: 500px;
             border-radius: 50%;
-            border: 1.5px solid rgba(13, 148, 136, 0.28);
+            border: 1.5px solid rgba(13, 148, 136, 0.25);
             pointer-events: none;
           }
 
           .accent-circle-top {
             position: absolute;
-            top: 54px;
-            right: 10px;
-            width: 145px;
-            height: 145px;
+            top: 10px;
+            right: 4px;
+            width: 175px;
+            height: 175px;
             border-radius: 50%;
             background-color: #00f5a0;
-            box-shadow: 0 10px 30px rgba(0, 245, 160, 0.35);
+            box-shadow: 0 12px 35px rgba(0, 245, 160, 0.4);
             z-index: 1;
           }
 
           .accent-circle-bottom {
             position: absolute;
-            bottom: 25px;
-            left: 10px;
-            width: 95px;
-            height: 95px;
+            bottom: 15px;
+            left: 5px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             background-color: #00f5a0;
-            box-shadow: 0 8px 25px rgba(0, 245, 160, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 245, 160, 0.38);
             z-index: 3;
           }
 
           .blueprint-arrow-decor {
             position: absolute;
-            bottom: 12px;
-            right: 15px;
+            bottom: 10px;
+            right: 6px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -503,15 +430,15 @@ export function Hero({ onNavigate, onOpenBooking }) {
 
           .main-photo-circle {
             position: absolute;
-            top: 72px;
-            left: 30px;
-            width: 360px;
-            height: 360px;
+            top: 25px;
+            left: calc(50% - 225px);
+            width: 450px;
+            height: 450px;
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
-            border: 4px solid #ffffff;
-            box-shadow: 0 20px 48px -10px rgba(15, 23, 42, 0.18);
+            border: 5px solid #ffffff;
+            box-shadow: 0 24px 52px -10px rgba(15, 23, 42, 0.2);
             background-color: #f1f5f9;
           }
 
@@ -540,8 +467,8 @@ export function Hero({ onNavigate, onOpenBooking }) {
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 30px 16px 20px;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.5) 45%, rgba(15, 23, 42, 0) 100%);
+            padding: 38px 20px 24px;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.55) 50%, rgba(15, 23, 42, 0) 100%);
             text-align: center;
             color: #ffffff;
             z-index: 5;
@@ -550,18 +477,28 @@ export function Hero({ onNavigate, onOpenBooking }) {
 
           .circle-author-name {
             font-weight: 800;
-            font-size: 1.05rem;
-            letter-spacing: -0.01em;
-            margin-bottom: 2px;
+            font-size: 1.22rem;
+            letter-spacing: -0.015em;
+            margin-bottom: 3px;
           }
 
           .circle-author-role {
-            font-size: 0.74rem;
+            font-size: 0.86rem;
             color: #00f5a0;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+        }
+
+        @media (min-width: 769px) and (max-width: 1040px) {
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+          }
+          .hero-circle-col {
+            margin-top: 10px;
           }
         }
 

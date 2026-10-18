@@ -19,9 +19,21 @@
   <!-- 12 Services & Expertises Technologiques -->
   <url>
     <loc>https://laurentmanouaba.pro/#services</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Galerie des Réalisations & Projets sur le Terrain -->
+  <url>
+    <loc>https://laurentmanouaba.pro/#realisations</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://laurentmanouaba.pro/assets/workshop-meeting.jpg</image:loc>
+      <image:title>Atelier Stratégique &amp; Masterclass IA Laurent Manouaba</image:title>
+    </image:image>
   </url>
 
   <!-- Prix, Formules & Grilles d'Intervention -->

@@ -75,6 +75,7 @@ export function Footer({ onNavigate, onOpenBooking }) {
               {[
                 { id: 'home', label: 'Accueil' },
                 { id: 'services', label: '12 Services & Expertises' },
+                { id: 'realisations', label: 'Galerie & Réalisations' },
                 { id: 'pricing', label: 'Prix & Formules' },
                 { id: 'about', label: 'À Propos de Laurent' },
                 { id: 'blog', label: 'Blog & Articles' },

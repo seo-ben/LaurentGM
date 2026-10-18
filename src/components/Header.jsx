@@ -16,6 +16,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
   const navItems = [
     { id: 'home', label: 'Accueil' },
     { id: 'services', label: 'Services' },
+    { id: 'realisations', label: 'Réalisations' },
     { id: 'pricing', label: 'Prix & Formules' },
     { id: 'about', label: 'À Propos' },
     { id: 'blog', label: 'Blog & Recherche' },
@@ -124,14 +125,14 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
                   onClick={() => handleLinkClick(item.id)}
                   style={{
                     fontFamily: 'var(--font-body)',
-                    fontSize: '0.86rem',
+                    fontSize: '0.83rem',
                     fontWeight: isActive ? '700' : '500',
                     color: isActive ? '#0f172a' : '#475569',
                     backgroundColor: isActive ? '#ffffff' : 'transparent',
                     boxShadow: isActive ? '0 1px 4px rgba(15, 23, 42, 0.08)' : 'none',
                     border: 'none',
                     borderRadius: '9999px',
-                    padding: '7px 16px',
+                    padding: '6px 13px',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                     flexShrink: 0,
@@ -280,7 +281,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
       </div>
 
       <style>{`
-        @media (min-width: 960px) {
+        @media (min-width: 1040px) {
           .pro-desktop-nav {
             display: flex !important;
           }

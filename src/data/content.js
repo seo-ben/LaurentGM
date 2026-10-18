@@ -340,3 +340,112 @@ export const FAQ_ITEMS = [
     a: "La confidentialité et l'éthique font partie des 5 piliers cardinaux de Laurent Manouaba (conformité stricte aux standards RGPD, accords de non-divulgation NDA systématiques avant toute consultation approfondie, et isolation hermétique des données clients)."
   }
 ];
+
+export const REALISATION_CATEGORIES = [
+  { id: "all", label: "Toutes les Réalisations" },
+  { id: "ateliers", label: "Ateliers & Masterclasses" },
+  { id: "conferences", label: "Conférences & Keynotes" },
+  { id: "audits", label: "Audits & Stratégie" },
+  { id: "rd-tech", label: "R&D & Deep Tech" }
+];
+
+export const REALISATIONS = [
+  {
+    id: "realisation-1",
+    title: "Atelier Stratégique & Masterclass IA Générative",
+    category: "ateliers",
+    categoryLabel: "Ateliers & Formations",
+    image: "/assets/realisations/realisation-1.jpg",
+    location: "Lomé, Togo",
+    date: "2023 - 2024",
+    client: "Cadres Décisionnaires & Dirigeants de PME",
+    shortDesc: "Animation d'un atelier exécutif interactif dédié à l'intégration concrète de l'IA dans les processus métiers.",
+    impact: "45+ cadres formés • 3 cas d'usage déployés en 30 jours"
+  },
+  {
+    id: "realisation-2",
+    title: "Conférence Prospective : Technologies de Rupture & Économie Africaine",
+    category: "conferences",
+    categoryLabel: "Conférences & Keynotes",
+    image: "/assets/realisations/realisation-2.jpg",
+    location: "Forum Régional de l'Innovation",
+    date: "2023",
+    client: "Écosystème Entrepreneuriat & Investisseurs",
+    shortDesc: "Keynote plénière sur les opportunités concrètes offertes par l'IA, la blockchain et l'informatique quantique.",
+    impact: "300+ participants • Retombées presse et partenariats créés"
+  },
+  {
+    id: "realisation-3",
+    title: "Architecture Deep Tech & Ingénierie des Modèles IA",
+    category: "rd-tech",
+    categoryLabel: "R&D & Deep Tech",
+    image: "/assets/realisations/realisation-3.jpg",
+    location: "Laboratoire R&D",
+    date: "2024",
+    client: "Projet d'Innovation Deep Tech",
+    shortDesc: "Recherche appliquée sur les réseaux de neurones, vision par ordinateur et modèles prédictifs adaptés au terrain.",
+    impact: "99.4% de précision algorithmique • Souveraineté des données"
+  },
+  {
+    id: "realisation-4",
+    title: "Laurent G-M Manouaba en Session de Recherche & Modélisation R&D",
+    category: "rd-tech",
+    categoryLabel: "R&D & Deep Tech",
+    image: "/assets/realisations/realisation-4.jpg",
+    location: "Cabinet Laurent Manouaba",
+    date: "2024",
+    client: "Études Stratégiques Internes",
+    shortDesc: "Immersion analytique, revue d'architectures logicielles et modélisation de solutions algorithmiques sur-mesure.",
+    impact: "240+ sujets de recherche explorés et documentés"
+  },
+  {
+    id: "realisation-5",
+    title: "Audit Stratégique & Optimisation de Marge Opérationnelle",
+    category: "audits",
+    categoryLabel: "Audits & Stratégie",
+    image: "/assets/realisations/realisation-5.jpg",
+    location: "Sous-région Ouest-Africaine",
+    date: "2023",
+    client: "PME & Directions Générales",
+    shortDesc: "Diagnostic de performance opérationnelle, analyse de rentabilité et restructuration des flux de production.",
+    impact: "+35% de marge opérationnelle dégagée en 6 mois"
+  },
+  {
+    id: "realisation-6",
+    title: "Développement & Supervision des Architectures Logicielles",
+    category: "rd-tech",
+    categoryLabel: "R&D & Deep Tech",
+    image: "/assets/realisations/realisation-6.jpg",
+    location: "Lomé & International",
+    date: "2024",
+    client: "Fintech & Plateformes Web",
+    shortDesc: "Déploiement de micro-services scalables, conteneurisation sécurisée et pipelines de données automatisés.",
+    impact: "Temps de calcul divisé par 4 • Réduction facture cloud -28%"
+  },
+  {
+    id: "realisation-7",
+    title: "Accompagnement Terrain & Conseil Exécutif Personnalisé",
+    category: "audits",
+    categoryLabel: "Audits & Stratégie",
+    image: "/assets/realisations/realisation-7.jpg",
+    location: "Lomé, Togo",
+    date: "2023 - 2024",
+    client: "Entreprises & Porteurs de Projets",
+    shortDesc: "Séances de travail en présentiel et mentorat stratégique pour l'arbitrage des investissements technologiques critiques.",
+    impact: "100% de missions délivrées à terme sans dépassement budgétaire"
+  },
+  {
+    id: "realisation-8",
+    title: "Management de l'Eustress & Conduite du Changement en Équipe",
+    category: "ateliers",
+    categoryLabel: "Ateliers & Formations",
+    image: "/assets/realisations/realisation-8.jpg",
+    location: "Séminaire d'Entreprise",
+    date: "2023",
+    client: "Équipes Techniques & Chefs de Projet",
+    shortDesc: "Accompagnement psychologique et organisationnel pour transformer le stress en force motrice positive.",
+    impact: "100% d'adhésion des équipes • Climat social consolidé"
+  }
+];
+
+
