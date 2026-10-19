@@ -1,44 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
+import { getStoredSlides } from '../utils/slidesStorage';
 
 export function Hero({ onNavigate, onOpenBooking }) {
-  // Photos de Laurent Manouaba en slider
-  const slides = [
-    {
-      id: 'suit',
-      label: 'Vision Dirigeant',
-      role: 'Consultant en Technologies & Stratégie',
-      image: '/assets/avatar-suit.png',
-      alt: 'Laurent G-M Manouaba - Consultant en Innovations Technologiques',
-      objectPosition: 'center 15%'
-    },
-    {
-      id: 'workshop',
-      label: 'Ateliers & R&D',
-      role: 'R&D & Transfert Opérationnel',
-      image: '/assets/workshop-meeting.jpg',
-      alt: 'Session d\'atelier collaboratif et R&D Laurent Manouaba',
-      objectPosition: 'center center'
-    },
-    {
-      id: 'desk',
-      label: 'Conception & IA',
-      role: 'Ingénierie IA & Modélisation Sur-Mesure',
-      image: '/assets/avatar-desk.png',
-      alt: 'Laurent G-M Manouaba au bureau - Modélisation & IA',
-      objectPosition: 'center top'
-    }
-  ];
-
+  // Photos de Laurent Manouaba en slider (dynamique via stockage / admin)
+  const [slides, setSlides] = useState(() => getStoredSlides());
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Synchronisation en direct si les slides sont mises à jour depuis l'espace Admin
+  useEffect(() => {
+    const handleUpdate = () => {
+      setSlides(getStoredSlides());
+    };
+    window.addEventListener('lgm_slides_updated', handleUpdate);
+    return () => window.removeEventListener('lgm_slides_updated', handleUpdate);
+  }, []);
 
   // Défilement automatique fluide toutes les 4.2 secondes
   useEffect(() => {
+    if (!slides.length) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 4200);
     return () => clearInterval(timer);
   }, [slides.length]);
+
+  const activeSlide = slides[currentSlide % slides.length] || slides[0] || {};
 
   return (
     <section className="hero-section">
@@ -219,7 +206,7 @@ export function Hero({ onNavigate, onOpenBooking }) {
                 <div className="circle-name-overlay">
                   <div className="circle-author-name">Laurent G-M Manouaba</div>
                   <div className="circle-author-role">
-                    {slides[currentSlide].role}
+                    {activeSlide.role}
                   </div>
                 </div>
               </div>

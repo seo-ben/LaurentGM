@@ -1,9 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ArrowUpRight, Calendar } from 'lucide-react';
 
 export function Header({ currentPage, onNavigate, onOpenBooking }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Triple-clic secret sur le logo pour accéder à l'espace Admin Studio
+  const logoClicksRef = useRef(0);
+  const clickTimerRef = useRef(null);
+
+  const handleLogoClick = () => {
+    logoClicksRef.current += 1;
+    if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+
+    if (logoClicksRef.current >= 3) {
+      logoClicksRef.current = 0;
+      onNavigate('studio');
+      setMobileMenuOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    handleLinkClick('home');
+
+    clickTimerRef.current = setTimeout(() => {
+      logoClicksRef.current = 0;
+    }, 800);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,9 +77,9 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
             gap: '20px'
           }}
         >
-          {/* Brand Logo & Name */}
+          {/* Brand Logo & Name avec triple-clic secret */}
           <div
-            onClick={() => handleLinkClick('home')}
+            onClick={handleLogoClick}
             style={{
               display: 'flex',
               alignItems: 'center',

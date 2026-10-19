@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Calendar, MessageSquare, ExternalLink, Shield } from 'lucide-react';
+import { MapPin, Phone, Mail, Calendar, MessageSquare, ExternalLink, Shield, Lock } from 'lucide-react';
 import { CONTACT_INFO } from '../data/content';
 import { LinkedinIcon, FacebookIcon, TwitterXIcon, WhatsappIcon } from './SocialIcons';
 

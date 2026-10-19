@@ -12,6 +12,7 @@ import { PricingPage } from './pages/PricingPage';
 import { AboutPage } from './pages/AboutPage';
 import { BlogPage } from './pages/BlogPage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminPage } from './pages/AdminPage';
 
 const PAGE_SEO = {
   home: {
@@ -41,6 +42,10 @@ const PAGE_SEO = {
   contact: {
     title: "Contact & Prise de Rendez-vous | Laurent G-M Manouaba",
     description: "Prenez rendez-vous directement pour un appel de cadrage stratégique gratuit de 30 minutes avec Laurent Manouaba. Réponse sous quelques heures."
+  },
+  studio: {
+    title: "LGM Studio — Administration Privée | Laurent G-M Manouaba",
+    description: "Espace privé d'administration Laurent G-M Manouaba."
   }
 };
 
@@ -143,6 +148,9 @@ export default function App() {
         )}
         {currentPage === 'contact' && (
           <ContactPage />
+        )}
+        {currentPage === 'studio' && (
+          <AdminPage onNavigate={setCurrentPage} />
         )}
       </main>
 

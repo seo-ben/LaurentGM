@@ -1,13 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Maximize2 } from 'lucide-react';
-import { REALISATIONS } from '../data/content';
+import { getStoredRealisations } from '../utils/slidesStorage';
 import { RealisationModal } from './RealisationModal';
 
 export function RealisationsSection({ onNavigate, onOpenBooking }) {
+  const [items, setItems] = useState(() => getStoredRealisations());
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+
+  // Écoute les modifications de la galerie depuis l'Espace Admin
+  useEffect(() => {
+    const handleUpdate = () => {
+      setItems(getStoredRealisations());
+    };
+    window.addEventListener('lgm_realisations_updated', handleUpdate);
+    return () => window.removeEventListener('lgm_realisations_updated', handleUpdate);
+  }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -49,28 +59,28 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
   };
 
   const handleNextItem = () => {
-    if (!selectedItem) return;
-    const currentIndex = REALISATIONS.findIndex((i) => i.id === selectedItem.id);
-    const nextIndex = (currentIndex + 1) % REALISATIONS.length;
-    setSelectedItem(REALISATIONS[nextIndex]);
+    if (!selectedItem || !items.length) return;
+    const currentIndex = items.findIndex((i) => i.id === selectedItem.id);
+    const nextIndex = (currentIndex + 1) % items.length;
+    setSelectedItem(items[nextIndex]);
   };
 
   const handlePrevItem = () => {
-    if (!selectedItem) return;
-    const currentIndex = REALISATIONS.findIndex((i) => i.id === selectedItem.id);
-    const prevIndex = (currentIndex - 1 + REALISATIONS.length) % REALISATIONS.length;
-    setSelectedItem(REALISATIONS[prevIndex]);
+    if (!selectedItem || !items.length) return;
+    const currentIndex = items.findIndex((i) => i.id === selectedItem.id);
+    const prevIndex = (currentIndex - 1 + items.length) % items.length;
+    setSelectedItem(items[prevIndex]);
   };
 
-  // Find images by id
-  const img1 = REALISATIONS.find((r) => r.id === 'realisation-1') || REALISATIONS[0];
-  const img2 = REALISATIONS.find((r) => r.id === 'realisation-2') || REALISATIONS[1];
-  const img3 = REALISATIONS.find((r) => r.id === 'realisation-3') || REALISATIONS[2];
-  const img4 = REALISATIONS.find((r) => r.id === 'realisation-4') || REALISATIONS[3];
-  const img5 = REALISATIONS.find((r) => r.id === 'realisation-5') || REALISATIONS[4];
-  const img6 = REALISATIONS.find((r) => r.id === 'realisation-6') || REALISATIONS[5];
-  const img7 = REALISATIONS.find((r) => r.id === 'realisation-7') || REALISATIONS[6];
-  const img8 = REALISATIONS.find((r) => r.id === 'realisation-8') || REALISATIONS[7];
+  // Find images by id or fallback to item index
+  const img1 = items.find((r) => r.id === 'realisation-1') || items[0] || {};
+  const img2 = items.find((r) => r.id === 'realisation-2') || items[1] || items[0] || {};
+  const img3 = items.find((r) => r.id === 'realisation-3') || items[2] || items[0] || {};
+  const img4 = items.find((r) => r.id === 'realisation-4') || items[3] || items[0] || {};
+  const img5 = items.find((r) => r.id === 'realisation-5') || items[4] || items[0] || {};
+  const img6 = items.find((r) => r.id === 'realisation-6') || items[5] || items[0] || {};
+  const img7 = items.find((r) => r.id === 'realisation-7') || items[6] || items[0] || {};
+  const img8 = items.find((r) => r.id === 'realisation-8') || items[7] || items[0] || {};
 
   return (
     <section
@@ -275,7 +285,7 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
       {/* Lightbox Modal */}
       <RealisationModal
         item={selectedItem}
-        items={REALISATIONS}
+        items={items}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onSelectNext={handleNextItem}

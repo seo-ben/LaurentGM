@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Maximize2 } from 'lucide-react';
-import { REALISATIONS, REALISATION_CATEGORIES } from '../data/content';
+import { REALISATION_CATEGORIES } from '../data/content';
+import { getStoredRealisations } from '../utils/slidesStorage';
 import { RealisationModal } from '../components/RealisationModal';
 
 export function RealisationsPage({ onOpenBooking }) {
+  const [items, setItems] = useState(() => getStoredRealisations());
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Écoute les modifications de la galerie depuis l'Espace Admin
+  useEffect(() => {
+    const handleUpdate = () => {
+      setItems(getStoredRealisations());
+    };
+    window.addEventListener('lgm_realisations_updated', handleUpdate);
+    return () => window.removeEventListener('lgm_realisations_updated', handleUpdate);
+  }, []);
+
   const filteredItems = activeCategory === 'all'
-    ? REALISATIONS
-    : REALISATIONS.filter((item) => item.category === activeCategory);
+    ? items
+    : items.filter((item) => item.category === activeCategory);
 
   // Trigger fluid emergence from left/right whenever category changes or page loads
   useEffect(() => {
@@ -80,8 +91,8 @@ export function RealisationsPage({ onOpenBooking }) {
           {REALISATION_CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.id;
             const count = cat.id === 'all'
-              ? REALISATIONS.length
-              : REALISATIONS.filter((r) => r.category === cat.id).length;
+              ? items.length
+              : items.filter((r) => r.category === cat.id).length;
 
             return (
               <button
