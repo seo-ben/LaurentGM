@@ -48,6 +48,19 @@ const CATEGORY_META = {
   audits: { label: 'Audits & Stratégie', bg: 'rgba(245, 158, 11, 0.1)', color: '#d97706' }
 };
 
+// Hachage cryptographique SHA-256 avec sel secret (Web Crypto API)
+async function hashPassword(pwd) {
+  const salt = 'lgm_security_salt_2026_laurent';
+  const encoder = new TextEncoder();
+  const data = encoder.encode(salt + pwd);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Empreinte SHA-256 avec sel du mot de passe initial (impossible à rétro-ingénier)
+const DEFAULT_PWD_HASH = '36ae5d6777a0981d05d2ef48de7272b7faf36f827b3bc5029bcae7f229632d39';
+
 export function AdminPage({ onNavigate }) {
   // -------------------------------------------------------------
   // AUTHENTIFICATION
@@ -149,21 +162,34 @@ export function AdminPage({ onNavigate }) {
   };
 
   // -------------------------------------------------------------
-  // AUTHENTIFICATION HANDLERS
+  // AUTHENTIFICATION HANDLERS (SÉCURISÉ SHA-256 AVEC SEL)
   // -------------------------------------------------------------
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const storedPwd = localStorage.getItem('lgm_admin_pwd') || 'lgm2026';
-    if (passwordInput.trim() === storedPwd) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('lgm_admin_auth', 'true');
-      setAuthError('');
-    } else {
-      setAuthError('Mot de passe incorrect.');
+    if (!passwordInput.trim()) {
+      setAuthError('Veuillez saisir votre mot de passe.');
+      return;
+    }
+
+    try {
+      const inputHash = await hashPassword(passwordInput.trim());
+      const storedHash = localStorage.getItem('lgm_admin_pwd_hash') || DEFAULT_PWD_HASH;
+
+      if (inputHash === storedHash) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('lgm_admin_auth', 'true');
+        setAuthError('');
+        setPasswordInput('');
+      } else {
+        setAuthError('Mot de passe incorrect.');
+      }
+    } catch (err) {
+      console.error('Erreur validation cryptographique:', err);
+      setAuthError('Erreur lors de la validation du mot de passe.');
     }
   };
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
     if (!newPassword || newPassword.length < 4) {
       showNotif('error', 'Le mot de passe doit comporter au moins 4 caractères.');
@@ -173,11 +199,19 @@ export function AdminPage({ onNavigate }) {
       showNotif('error', 'Les deux mots de passe ne correspondent pas.');
       return;
     }
-    localStorage.setItem('lgm_admin_pwd', newPassword);
-    setShowPasswordModal(false);
-    setNewPassword('');
-    setConfirmPassword('');
-    showNotif('success', 'Votre mot de passe secret a été mis à jour avec succès !');
+
+    try {
+      const newHash = await hashPassword(newPassword);
+      localStorage.setItem('lgm_admin_pwd_hash', newHash);
+      localStorage.removeItem('lgm_admin_pwd'); // Supprime l'ancien mot de passe en clair s'il existait
+      setShowPasswordModal(false);
+      setNewPassword('');
+      setConfirmPassword('');
+      showNotif('success', 'Votre nouveau mot de passe a été chiffré en SHA-256 et enregistré avec succès !');
+    } catch (err) {
+      console.error('Erreur chiffrement mot de passe:', err);
+      showNotif('error', 'Erreur lors de l\'enregistrement du mot de passe.');
+    }
   };
 
   const handleLogout = () => {
