@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { WhatsAppBookingModal } from './components/WhatsAppBookingModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { ScrollToTop } from './components/ScrollToTop';
 
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
@@ -170,6 +171,9 @@ export default function App() {
 
       {/* Floating WhatsApp Quick Contact Button */}
       <FloatingWhatsApp onOpenBooking={handleOpenBooking} />
+
+      {/* Floating Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 }
