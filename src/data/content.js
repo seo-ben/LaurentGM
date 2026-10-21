@@ -6,6 +6,7 @@ export const CONTACT_INFO = {
   title: "Consultant en Innovations Technologiques & Stratégie Opérationnelle",
   tagline: "« La technologie révolutionnaire à la portée de tous »",
   phoneDisplay: "+228 90 44 55 71 / 98 19 17 70",
+  whatsappDisplay: "+228 90 44 55 71",
   whatsappNumber: "22890445571", // Format international sans '+' pour wa.me
   whatsappSecondary: "22898191770",
   email: "Contact@laurentmanouaba.pro",

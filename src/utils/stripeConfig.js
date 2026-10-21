@@ -9,23 +9,27 @@ const STORAGE_KEY = 'lgm_stripe_config';
 const DEFAULT_CONFIG = {
   publishableKey: '',
   secretKeyConfigured: false,
-  paymentLinkUrl: '', // Possibilité d'intégrer un Stripe Payment Link direct
+  paymentLinkUrl: '', // Configurable via .env (VITE_STRIPE_PAYMENT_LINK) ou Admin
   appointmentPrice: 90, // Tarif par défaut d'une prise de RDV / consultation (90 $)
   currency: 'USD',
   currencySymbol: '$',
   appointmentDuration: '1 heure de cadrage stratégique + 48h de suivi',
-  mode: 'live', // 'test' | 'live'
+  mode: 'live',
   enabled: true
 };
 
 /**
- * Récupère la configuration Stripe active
+ * Récupère la configuration Stripe active en priorité depuis le .env
  */
 export function getStripeConfig() {
+  const envPublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
+  const envPaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK || '';
+
   if (typeof window === 'undefined') {
     return {
       ...DEFAULT_CONFIG,
-      publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || ''
+      publishableKey: envPublishableKey,
+      paymentLinkUrl: envPaymentLink
     };
   }
 
@@ -33,13 +37,14 @@ export function getStripeConfig() {
     const raw = localStorage.getItem(STORAGE_KEY);
     const stored = raw ? JSON.parse(raw) : {};
     
-    // Fallback sur la variable d'environnement si non présente dans localStorage
+    // Priorité : stockage admin si personnalisé, sinon variable d'environnement .env
     const publishableKey = (stored.publishableKey && stored.publishableKey.trim()) 
       ? stored.publishableKey 
-      : (import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
-    const paymentLinkUrl = (stored.paymentLinkUrl && stored.paymentLinkUrl.trim()) 
+      : envPublishableKey;
+
+    const paymentLinkUrl = (stored.paymentLinkUrl && stored.paymentLinkUrl.trim().length > 10) 
       ? stored.paymentLinkUrl 
-      : (import.meta.env.VITE_STRIPE_PAYMENT_LINK || '');
+      : envPaymentLink;
 
     const detectedMode = stored.mode || (publishableKey.startsWith('pk_test_') ? 'test' : 'live');
 
@@ -54,8 +59,8 @@ export function getStripeConfig() {
     console.error('Erreur lecture configuration Stripe :', e);
     return {
       ...DEFAULT_CONFIG,
-      publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '',
-      paymentLinkUrl: import.meta.env.VITE_STRIPE_PAYMENT_LINK || ''
+      publishableKey: envPublishableKey,
+      paymentLinkUrl: envPaymentLink
     };
   }
 }
