@@ -110,6 +110,7 @@ export function LanguageSelector({ variant = 'header' }) {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Changer de langue"
         aria-expanded={isOpen}
+        className="lang-selector-btn"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -123,7 +124,8 @@ export function LanguageSelector({ variant = 'header' }) {
           fontWeight: '700',
           cursor: 'pointer',
           boxShadow: isOpen ? '0 4px 12px rgba(15, 23, 42, 0.08)' : 'none',
-          transition: 'all 0.18s ease'
+          transition: 'all 0.18s ease',
+          flexShrink: 0
         }}
         onMouseEnter={(e) => {
           if (!isOpen) e.currentTarget.style.backgroundColor = 'rgba(15, 23, 42, 0.08)';
@@ -196,6 +198,16 @@ export function LanguageSelector({ variant = 'header' }) {
           })}
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 640px) {
+          .lang-selector-btn {
+            padding: 5px 9px !important;
+            font-size: 0.76rem !important;
+            gap: 4px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

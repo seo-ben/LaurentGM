@@ -71,60 +71,22 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
       }}
     >
       <div className="container" style={{ maxWidth: '1280px' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '70px',
-            gap: '20px'
-          }}
-        >
+        <div className="header-inner">
           {/* Brand Logo & Name avec triple-clic secret */}
           <div
             onClick={handleLogoClick}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              cursor: 'pointer',
-              flexShrink: 0,
-              userSelect: 'none'
-            }}
+            className="header-brand"
           >
             <img
               src="/assets/logo.png"
               alt="Logo LGM Consulting"
-              style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                objectFit: 'contain',
-                boxShadow: '0 2px 8px rgba(13, 148, 136, 0.25)'
-              }}
+              className="header-brand-logo"
             />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '1.05rem',
-                  fontWeight: '800',
-                  color: 'var(--text-primary)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.15
-                }}
-              >
+              <span className="header-brand-title">
                 LGM Consulting
               </span>
-              <span
-                style={{
-                  fontSize: '0.74rem',
-                  fontWeight: '500',
-                  color: '#64748b',
-                  letterSpacing: '0.01em',
-                  lineHeight: 1.2
-                }}
-              >
+              <span className="header-brand-sub">
                 {t('header.brandSub')}
               </span>
             </div>
@@ -184,8 +146,8 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
           </nav>
 
           {/* Action CTA: Mint Pill & Sélecteur de Langue */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            {/* Sélecteur de Langue Desktop */}
+          <div className="header-actions">
+            {/* Sélecteur de Langue */}
             <LanguageSelector />
 
             <button
@@ -227,18 +189,6 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="pro-mobile-toggle"
               aria-label="Menu"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '40px',
-                height: '40px',
-                borderRadius: '8px',
-                border: '1px solid rgba(15, 23, 42, 0.1)',
-                backgroundColor: '#ffffff',
-                color: '#0f172a',
-                cursor: 'pointer'
-              }}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -251,15 +201,48 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
             style={{
               padding: '16px',
               backgroundColor: '#ffffff',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border-subtle)',
-              boxShadow: 'var(--shadow-xl)',
+              borderRadius: '16px',
+              border: '1px solid rgba(15, 23, 42, 0.08)',
+              boxShadow: '0 20px 40px -12px rgba(15, 23, 42, 0.18)',
               display: 'flex',
               flexDirection: 'column',
               gap: '6px',
-              marginBottom: '16px'
+              marginBottom: '16px',
+              maxHeight: 'calc(100vh - 80px)',
+              overflowY: 'auto'
             }}
           >
+            {/* Header branding inside drawer */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '4px 6px 12px',
+                borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
+                marginBottom: '4px'
+              }}
+            >
+              <img
+                src="/assets/logo.png"
+                alt="Logo LGM Consulting"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  objectFit: 'contain'
+                }}
+              />
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontWeight: '800', fontSize: '0.95rem', color: '#0f172a' }}>
+                  LGM Consulting
+                </span>
+                <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                  {t('header.brandSub')}
+                </span>
+              </div>
+            </div>
+
             {navItems.map((item) => {
               const isActive = currentPage === item.id;
               return (
@@ -314,6 +297,119 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
       </div>
 
       <style>{`
+        .header-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 70px;
+          gap: 16px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .header-brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          flex-shrink: 0;
+          user-select: none;
+          min-width: 0;
+        }
+
+        .header-brand-logo {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          object-fit: contain;
+          box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+          flex-shrink: 0;
+          transition: transform 0.2s ease;
+        }
+
+        .header-brand:hover .header-brand-logo {
+          transform: scale(1.04);
+        }
+
+        .header-brand-title {
+          font-family: var(--font-heading);
+          font-size: 1.05rem;
+          fontWeight: 800;
+          color: var(--text-primary);
+          letter-spacing: -0.02em;
+          line-height: 1.15;
+          white-space: nowrap;
+        }
+
+        .header-brand-sub {
+          font-size: 0.74rem;
+          font-weight: 500;
+          color: #64748b;
+          letter-spacing: 0.01em;
+          line-height: 1.2;
+          white-space: nowrap;
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+        }
+
+        .pro-mobile-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          border: 1px solid rgba(15, 23, 42, 0.12);
+          background-color: #ffffff;
+          color: #0f172a;
+          cursor: pointer;
+          flex-shrink: 0;
+          box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+          transition: all 0.2s ease;
+        }
+
+        .pro-mobile-toggle:hover {
+          background-color: #f8fafc;
+          border-color: rgba(15, 23, 42, 0.2);
+        }
+
+        .pro-mobile-toggle:active {
+          transform: scale(0.96);
+        }
+
+        @media (max-width: 640px) {
+          .header-inner {
+            height: 62px;
+            gap: 8px;
+          }
+          .header-brand {
+            gap: 10px;
+          }
+          .header-brand-logo {
+            width: 35px;
+            height: 35px;
+          }
+          .header-brand-title {
+            font-size: 1rem;
+          }
+          .header-brand-sub {
+            display: none !important;
+          }
+          .header-actions {
+            gap: 6px;
+          }
+          .pro-mobile-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+          }
+        }
+
         @media (min-width: 1040px) {
           .pro-desktop-nav {
             display: flex !important;
