@@ -1,28 +1,46 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp, MessageSquare } from 'lucide-react';
-import { FAQ_ITEMS } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function FaqSection({ onOpenBooking }) {
+  const { faq, t, lang } = useLanguage();
   const [openIdx, setOpenIdx] = useState(0);
 
   const toggle = (idx) => {
     setOpenIdx(openIdx === idx ? null : idx);
   };
 
+  const bottomCta = {
+    fr: {
+      text: "Vous avez une question spécifique sur votre cas d'usage ou vos systèmes informatiques ?",
+      btn: "Poser ma question directement au cabinet"
+    },
+    en: {
+      text: "Do you have a specific question about your technical use case or infrastructure?",
+      btn: "Ask our consultants directly"
+    },
+    pt: {
+      text: "Tem uma pergunta específica sobre o seu projeto ou infraestrutura de TI?",
+      btn: "Tirar dúvida diretamente com a equipe"
+    }
+  };
+
+  const cta = bottomCta[lang] || bottomCta.fr;
+
   return (
     <section id="faq" style={{ padding: '90px 0', position: 'relative' }}>
       <div className="container">
         <div className="section-center reveal-on-scroll">
           <h2 className="section-title">
-            Questions Fréquentes sur Nos Interventions
+            {t('faqSection.title') || "Questions Fréquentes"}
           </h2>
           <p className="section-subtitle">
-            Toutes les réponses pour aborder votre collaboration avec Laurent Manouaba en toute sérénité.
+            {t('faqSection.subtitle') || "Toutes les réponses pour aborder votre collaboration en toute sérénité."}
           </p>
         </div>
 
         <div style={{ maxWidth: '820px', margin: '0 auto 40px' }}>
-          {FAQ_ITEMS.map((item, idx) => {
+          {faq.map((item, idx) => {
             const isOpen = openIdx === idx;
             return (
               <div
@@ -93,17 +111,18 @@ export function FaqSection({ onOpenBooking }) {
           }}
         >
           <p style={{ fontSize: '0.94rem', color: 'var(--text-secondary)', marginBottom: '14px' }}>
-            Vous avez une question spécifique sur votre cas d'usage ou vos systèmes informatiques ?
+            {cta.text}
           </p>
           <button
-            onClick={() => onOpenBooking('Question spécifique')}
+            onClick={() => onOpenBooking(cta.btn)}
             className="btn btn-whatsapp btn-sm"
           >
             <MessageSquare size={16} />
-            <span>Poser ma question directement à Laurent Manouaba</span>
+            <span>{cta.btn}</span>
           </button>
         </div>
       </div>
     </section>
   );
 }
+

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ArrowUpRight, Calendar } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 export function Header({ currentPage, onNavigate, onOpenBooking }) {
+  const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,13 +40,13 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
   }, []);
 
   const navItems = [
-    { id: 'home', label: 'Accueil' },
-    { id: 'services', label: 'Services' },
-    { id: 'realisations', label: 'Réalisations' },
-    { id: 'pricing', label: 'Prix & Formules' },
-    { id: 'about', label: 'À Propos' },
-    { id: 'blog', label: 'Blog & Recherche' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'home', label: t('nav.home') },
+    { id: 'services', label: t('nav.services') },
+    { id: 'realisations', label: t('nav.realisations') },
+    { id: 'pricing', label: t('nav.pricing') },
+    { id: 'about', label: t('nav.about') },
+    { id: 'blog', label: t('nav.blog') },
+    { id: 'contact', label: t('nav.contact') }
   ];
 
   const handleLinkClick = (id) => {
@@ -91,7 +94,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
           >
             <img
               src="/assets/logo.png"
-              alt="Logo Laurent Manouaba"
+              alt="Logo LGM Consulting"
               style={{
                 width: '38px',
                 height: '38px',
@@ -111,7 +114,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
                   lineHeight: 1.15
                 }}
               >
-                Laurent G-M Manouaba
+                LGM Consulting
               </span>
               <span
                 style={{
@@ -122,7 +125,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
                   lineHeight: 1.2
                 }}
               >
-                Innovations Technologiques & R&D
+                {t('header.brandSub')}
               </span>
             </div>
           </div>
@@ -180,10 +183,13 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
             })}
           </nav>
 
-          {/* Action CTA: Mint Pill in exact harmony with mockup */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          {/* Action CTA: Mint Pill & Sélecteur de Langue */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Sélecteur de Langue Desktop */}
+            <LanguageSelector />
+
             <button
-              onClick={() => onOpenBooking('Audit Découverte Offert (30 min)')}
+              onClick={() => onNavigate('contact')}
               className="pro-header-cta"
               style={{
                 display: 'none',
@@ -194,7 +200,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
                 fontFamily: 'var(--font-body)',
                 fontSize: '0.86rem',
                 fontWeight: '800',
-                padding: '9px 20px',
+                padding: '9px 18px',
                 borderRadius: '9999px',
                 border: 'none',
                 cursor: 'pointer',
@@ -212,7 +218,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
               }}
             >
               <Calendar size={16} />
-              <span>Prendre RDV</span>
+              <span>{t('header.ctaBook')}</span>
               <ArrowUpRight size={14} />
             </button>
 
@@ -276,11 +282,15 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
                 </button>
               );
             })}
-            <div style={{ height: '1px', backgroundColor: 'var(--border-subtle)', margin: '6px 0' }} />
+
+            {/* Sélecteur de Langue dans le menu mobile */}
+            <LanguageSelector variant="mobile-drawer" />
+
+            <div style={{ height: '1px', backgroundColor: 'var(--border-subtle)', margin: '8px 0' }} />
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenBooking('Audit Découverte Initial');
+                onNavigate('contact');
               }}
               style={{
                 backgroundColor: '#00f5a0',
@@ -297,7 +307,7 @@ export function Header({ currentPage, onNavigate, onOpenBooking }) {
               }}
             >
               <Calendar size={17} />
-              <span>Prendre RDV</span>
+              <span>{t('header.ctaBook')}</span>
             </button>
           </div>
         )}

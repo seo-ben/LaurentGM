@@ -25,7 +25,8 @@ import {
   Layers,
   Filter,
   Camera,
-  X
+  X,
+  CreditCard
 } from 'lucide-react';
 import {
   getStoredSlides,
@@ -39,6 +40,7 @@ import {
   uploadToCloudinary,
   DEFAULT_HERO_SLIDES
 } from '../utils/slidesStorage';
+import { getStripeConfig, saveStripeConfig, isStripeConfigured } from '../utils/stripeConfig';
 import { REALISATION_CATEGORIES } from '../data/content';
 
 const CATEGORY_META = {
@@ -73,9 +75,23 @@ export function AdminPage({ onNavigate }) {
   const [authError, setAuthError] = useState('');
 
   // -------------------------------------------------------------
-  // ONGLET ACTIF : 'hero' | 'realisations'
+  // ONGLET ACTIF : 'hero' | 'realisations' | 'stripe'
   // -------------------------------------------------------------
   const [activeTab, setActiveTab] = useState('hero');
+
+  // -------------------------------------------------------------
+  // CONFIGURATION STRIPE
+  // -------------------------------------------------------------
+  const [stripeSettings, setStripeSettings] = useState(() => getStripeConfig());
+  const [copiedStripeUrl, setCopiedStripeUrl] = useState('');
+
+  const handleCopyStripeUrl = (text, key) => {
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopiedStripeUrl(key);
+      setTimeout(() => setCopiedStripeUrl(''), 2500);
+    }
+  };
 
   // -------------------------------------------------------------
   // GESTION DU SLIDER HERO
@@ -221,6 +237,19 @@ export function AdminPage({ onNavigate }) {
   };
 
   // -------------------------------------------------------------
+  // STRIPE CONFIGURATION HANDLER
+  // -------------------------------------------------------------
+  const handleSaveStripe = (e) => {
+    e.preventDefault();
+    try {
+      saveStripeConfig(stripeSettings);
+      showNotif('success', 'Configuration Stripe enregistrée avec succès !');
+    } catch (err) {
+      showNotif('error', 'Erreur lors de la sauvegarde de la configuration Stripe.');
+    }
+  };
+
+  // -------------------------------------------------------------
   // HERO SLIDER HANDLERS
   // -------------------------------------------------------------
   const handleHeroFileChange = (e) => {
@@ -267,7 +296,7 @@ export function AdminPage({ onNavigate }) {
         id: `slide_${Date.now()}`,
         role: heroRoleInput.trim() || 'Consultant en Innovations & R&D',
         image: result.url,
-        alt: `Laurent G-M Manouaba - ${heroRoleInput.trim() || 'Innovations Technologiques'}`,
+        alt: `LGM Consulting - ${heroRoleInput.trim() || 'Innovations Technologiques'}`,
         objectPosition: heroPositionInput
       };
 
@@ -529,7 +558,7 @@ export function AdminPage({ onNavigate }) {
 
           <h1 className="admin-login-title">LGM Studio</h1>
           <p className="admin-login-subtitle">
-            Espace d'administration privé & gestion des photos de Laurent G-M Manouaba.
+            Espace d'administration privé & gestion des médias du cabinet LGM Consulting.
           </p>
 
           <form onSubmit={handleLogin} className="admin-login-form">
@@ -792,6 +821,24 @@ export function AdminPage({ onNavigate }) {
             <ImageIcon size={18} />
             <span>Galerie & Réalisations (Portfolio)</span>
             <span className="admin-tab-count">{realisations.length}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`admin-tab-item ${activeTab === 'stripe' ? 'active' : ''}`}
+            onClick={() => setActiveTab('stripe')}
+          >
+            <CreditCard size={18} />
+            <span>Paiement & Clé Stripe</span>
+            <span
+              className="admin-tab-count"
+              style={{
+                backgroundColor: isStripeConfigured() ? '#dcfce7' : '#fef3c7',
+                color: isStripeConfigured() ? '#15803d' : '#b45309'
+              }}
+            >
+              {isStripeConfigured() ? '✓ Configuré' : 'En attente'}
+            </span>
           </button>
         </div>
       </div>
@@ -1070,7 +1117,7 @@ export function AdminPage({ onNavigate }) {
                     })}
 
                     <div className="preview-name-overlay">
-                      <div className="preview-author-name">Laurent G-M Manouaba</div>
+                      <div className="preview-author-name">LGM Consulting</div>
                       <div className="preview-author-role">
                         {activePreviewSlide.role}
                       </div>
@@ -1368,6 +1415,330 @@ export function AdminPage({ onNavigate }) {
               })}
             </div>
           </section>
+        </main>
+      )}
+
+      {/* =========================================================
+          CONTENU : ONGLET 3 - PAIEMENT & CONFIGURATION STRIPE
+         ========================================================= */}
+      {activeTab === 'stripe' && (
+        <main className="container" style={{ padding: '32px 0 60px' }}>
+          <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+            {/* Carte Présentation & Statut */}
+            <div
+              className="admin-card"
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '16px',
+                padding: '28px 32px',
+                marginBottom: '24px',
+                boxShadow: '0 4px 20px -4px rgba(15, 23, 42, 0.08)',
+                border: '1px solid rgba(15, 23, 42, 0.08)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      backgroundColor: '#6366f1',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      boxShadow: '0 4px 14px rgba(99, 102, 241, 0.35)'
+                    }}
+                  >
+                    <CreditCard size={26} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+                      Paramètres de Paiement Stripe
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '3px', margin: 0 }}>
+                      Toutes les prises de rendez-vous sur le site sont payantes via cette configuration.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 14px',
+                    borderRadius: '9999px',
+                    fontSize: '0.8rem',
+                    fontWeight: '800',
+                    backgroundColor: isStripeConfigured() ? '#dcfce7' : '#fef3c7',
+                    color: isStripeConfigured() ? '#15803d' : '#b45309'
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      backgroundColor: isStripeConfigured() ? '#16a34a' : '#d97706'
+                    }}
+                  />
+                  <span>{isStripeConfigured() ? 'Stripe Prêt & Actif' : 'Clé Stripe en attente'}</span>
+                </div>
+              </div>
+
+              {/* Formulaire Stripe */}
+              <form onSubmit={handleSaveStripe}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {/* Clé Publique */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: '700', color: '#0f172a', marginBottom: '6px' }}>
+                      Clé Publique Stripe (Publishable Key) *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ex: pk_live_51P... ou pk_test_51P..."
+                      value={stripeSettings.publishableKey || ''}
+                      onChange={(e) => setStripeSettings({ ...stripeSettings, publishableKey: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '12px 14px',
+                        borderRadius: '10px',
+                        border: '1.5px solid rgba(15, 23, 42, 0.15)',
+                        fontFamily: 'monospace',
+                        fontSize: '0.9rem',
+                        backgroundColor: '#f8fafc'
+                      }}
+                    />
+                    <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '5px', margin: 0 }}>
+                      Votre clé publique Stripe commençant par <code>pk_live_</code> (production) ou <code>pk_test_</code> (test).
+                    </p>
+                  </div>
+
+                  {/* Lien de paiement direct (Payment Link) */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: '700', color: '#0f172a', marginBottom: '6px' }}>
+                      Lien de Paiement Direct Stripe (Stripe Payment Link URL - optionnel)
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="Ex: https://buy.stripe.com/..."
+                      value={stripeSettings.paymentLinkUrl || ''}
+                      onChange={(e) => setStripeSettings({ ...stripeSettings, paymentLinkUrl: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '12px 14px',
+                        borderRadius: '10px',
+                        border: '1.5px solid rgba(15, 23, 42, 0.15)',
+                        fontFamily: 'monospace',
+                        fontSize: '0.9rem',
+                        backgroundColor: '#f8fafc'
+                      }}
+                    />
+                    <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '5px', margin: 0 }}>
+                      Lien créé sur dashboard.stripe.com &gt; Liens de paiement (ex: Consultation 90 $). Permet un règlement direct par carte bancaire.
+                    </p>
+                  </div>
+
+                  {/* Tarif et Devise */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: '700', color: '#0f172a', marginBottom: '6px' }}>
+                        Tarif de la Consultation ($)
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={stripeSettings.appointmentPrice || 90}
+                        onChange={(e) => setStripeSettings({ ...stripeSettings, appointmentPrice: Number(e.target.value) })}
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          borderRadius: '10px',
+                          border: '1.5px solid rgba(15, 23, 42, 0.15)',
+                          fontSize: '0.95rem'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: '700', color: '#0f172a', marginBottom: '6px' }}>
+                        Mode d'Opération
+                      </label>
+                      <select
+                        value={stripeSettings.mode || 'live'}
+                        onChange={(e) => setStripeSettings({ ...stripeSettings, mode: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          borderRadius: '10px',
+                          border: '1.5px solid rgba(15, 23, 42, 0.15)',
+                          fontSize: '0.95rem',
+                          backgroundColor: '#f8fafc'
+                        }}
+                      >
+                        <option value="live">Mode Production (Live)</option>
+                        <option value="test">Mode Test (bac à sable)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Guide de Personnalisation : Redirection de Succès & WhatsApp */}
+                  <div
+                    style={{
+                      marginTop: '24px',
+                      backgroundColor: '#f8fafc',
+                      border: '1.5px solid #10b981',
+                      borderRadius: '16px',
+                      padding: '22px 24px'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '10px',
+                          backgroundColor: '#dcfce7',
+                          color: '#059669',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}
+                      >
+                        <Sparkles size={20} />
+                      </div>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800', color: '#0f172a' }}>
+                          Personnalisation du Lien de Succès & Notification WhatsApp
+                        </h4>
+                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>
+                          Permettez au client d'envoyer la confirmation de son règlement par message WhatsApp direct au cabinet (+228 90 44 55 71) immédiatement après avoir payé sur Stripe.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
+                      {/* Option 1 */}
+                      <div style={{ backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '12px', padding: '16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '6px' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#0f172a' }}>
+                            ⭐ Option 1 (Recommandée) : Page de Succès du Site avec Reçu Fintech & Bouton WhatsApp
+                          </span>
+                          <span style={{ fontSize: '0.7rem', fontWeight: '800', padding: '2px 8px', borderRadius: '12px', backgroundColor: '#dcfce7', color: '#065f46' }}>
+                            Design Billet / Reçu Épuré
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '0.8rem', color: '#475569', margin: '0 0 10px', lineHeight: 1.5 }}>
+                          Après paiement sécurisé, Stripe renvoie le client sur votre site. Une fiche de reçu épurée confirme la transaction et propose un bouton direct pour transmettre la confirmation sur WhatsApp (+228 90 44 55 71).
+                        </p>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            readOnly
+                            value="https://laurentmanouaba.pro/?paiement=succes"
+                            style={{
+                              flex: 1,
+                              padding: '10px 12px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              fontFamily: 'monospace',
+                              fontSize: '0.85rem',
+                              backgroundColor: '#f1f5f9',
+                              color: '#0f172a'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleCopyStripeUrl('https://laurentmanouaba.pro/?paiement=succes', 'opt1')}
+                            className="btn btn-outline btn-sm"
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                          >
+                            {copiedStripeUrl === 'opt1' ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
+                            <span>{copiedStripeUrl === 'opt1' ? 'Copié !' : 'Copier'}</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Option 2 */}
+                      <div style={{ backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '12px', padding: '16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '6px' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#0f172a' }}>
+                            Option 2 : Redirection Directe vers WhatsApp depuis Stripe
+                          </span>
+                          <span style={{ fontSize: '0.7rem', fontWeight: '800', padding: '2px 8px', borderRadius: '12px', backgroundColor: '#e0f2fe', color: '#0369a1' }}>
+                            Redirection Directe
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '0.8rem', color: '#475569', margin: '0 0 10px', lineHeight: 1.5 }}>
+                          Dès que le paiement est validé, Stripe redirige automatiquement le navigateur vers WhatsApp avec un message pré-rempli pour le cabinet (+228 90 44 55 71).
+                        </p>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            readOnly
+                            value="https://wa.me/22890445571?text=Bonjour%2C%20je%20viens%20d%27effectuer%20avec%20succ%C3%A8s%20le%20r%C3%A8glement%20de%20ma%20consultation%20strat%C3%A9gique%20(90%20%24)%20sur%20votre%20plateforme."
+                            style={{
+                              flex: 1,
+                              padding: '10px 12px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              fontFamily: 'monospace',
+                              fontSize: '0.85rem',
+                              backgroundColor: '#f1f5f9',
+                              color: '#0f172a'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleCopyStripeUrl('https://wa.me/22890445571?text=Bonjour%2C%20je%20viens%20d%27effectuer%20avec%20succ%C3%A8s%20le%20r%C3%A8glement%20de%20ma%20consultation%20strat%C3%A9gique%20(90%20%24)%20sur%20votre%20plateforme.', 'opt2')}
+                            className="btn btn-outline btn-sm"
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                          >
+                            {copiedStripeUrl === 'opt2' ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
+                            <span>{copiedStripeUrl === 'opt2' ? 'Copié !' : 'Copier'}</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Instructions pas-à-pas */}
+                      <div style={{ backgroundColor: '#f1f5f9', borderRadius: '10px', padding: '12px 16px', fontSize: '0.8rem', color: '#334155', lineHeight: 1.6 }}>
+                        <strong>Comment configurer cela dans votre compte Stripe en 1 minute :</strong>
+                        <ol style={{ margin: '6px 0 0', paddingLeft: '18px' }}>
+                          <li>Connectez-vous sur <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" style={{ color: '#0284c7', fontWeight: '700' }}>dashboard.stripe.com</a> &gt; <strong>Liens de paiement</strong> (Payment Links).</li>
+                          <li>Cliquez sur votre lien de consultation (ex: 90 $) puis sur <strong>Modifier</strong>.</li>
+                          <li>Dans la section <strong>« Après le paiement »</strong> (ou Page de confirmation), cochez <strong>« Rediriger les clients vers votre site web »</strong>.</li>
+                          <li>Collez l'un des deux liens ci-dessus puis cliquez sur <strong>Enregistrer</strong>.</li>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bouton de sauvegarde */}
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{
+                        backgroundColor: '#6366f1',
+                        borderColor: '#6366f1',
+                        padding: '12px 24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Check size={18} />
+                      <span>Enregistrer la Configuration Stripe</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </main>
       )}
 

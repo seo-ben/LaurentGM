@@ -11,7 +11,7 @@ import {
   Award,
   Sparkles
 } from 'lucide-react';
-import { ANNUAL_PLANS, SPOT_PLANS } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 /**
  * Animated 3D Interactive Pricing Card
@@ -22,6 +22,7 @@ import { ANNUAL_PLANS, SPOT_PLANS } from '../data/content';
  * 4. Clicking button passes full plan object to launch prefilled modal immediately.
  */
 function PricingCard({ plan, index, onSelect, tabKey }) {
+  const { lang } = useLanguage();
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({
     x: 0,
@@ -414,7 +415,13 @@ function PricingCard({ plan, index, onSelect, tabKey }) {
           }}
         >
           <ShieldCheck size={12} color="#0d9488" />
-          <span>Entretien initial offert • Sans engagement</span>
+          <span>
+            {lang === 'en'
+              ? 'Paid strategic consultation & intake'
+              : lang === 'pt'
+              ? 'Consultoria estratégica remunerada'
+              : 'Prise de rendez-vous & consultation payantes'}
+          </span>
         </p>
       </div>
     </div>
@@ -422,9 +429,107 @@ function PricingCard({ plan, index, onSelect, tabKey }) {
 }
 
 export function PricingPage({ onOpenBooking }) {
+  const { annualPlans, spotPlans, t, lang } = useLanguage();
   const [tab, setTab] = useState('annual'); // 'annual' | 'spot'
 
-  const currentPlans = tab === 'annual' ? ANNUAL_PLANS : SPOT_PLANS;
+  const currentPlans = tab === 'annual' ? annualPlans : spotPlans;
+
+  const guideData = {
+    fr: {
+      title: "Guide Pratique : Comment Bien Choisir Votre Consultant",
+      subtitle: "Recommandations méthodologiques issues de la synthèse officielle du cabinet LGM Consulting & Innovations.",
+      steps: [
+        {
+          num: '01',
+          title: 'Expertise fonctionnelle & transversale',
+          text: "Privilégiez un cabinet spécialiste d'un domaine mais aussi compétent dans les domaines voisins (électronique, informatique, génie des procédés). Cela évite souvent d'engager plusieurs intermédiaires."
+        },
+        {
+          num: '02',
+          title: "Pluralité de méthodes d'approche",
+          text: "Demandez comment l'équipe compte résoudre le problème. Un bon cabinet propose plusieurs méthodologies, ce qui évite de reproduire une approche déjà tentée sans succès."
+        },
+        {
+          num: '03',
+          title: 'Références réelles & cas concrets',
+          text: "Les études de cas et les retours d'expérience vérifiables sur le terrain valent infiniment mieux qu'une présentation purement théorique."
+        },
+        {
+          num: '04',
+          title: 'Disponibilité & engagement',
+          text: "Vérifiez la capacité d'intervention et la réactivité réelle, surtout si votre projet stratégique requiert un suivi exclusif et continu."
+        },
+        {
+          num: '05',
+          title: 'Rentabilité mesurable & clarté financière',
+          text: "L'important est la valeur nette obtenue pour l'investissement consenti. Les structures d'honoraires doivent être définies et contractualisées en amont."
+        }
+      ]
+    },
+    en: {
+      title: "Practical Guide: Choosing the Right Strategic Advisor",
+      subtitle: "Methodological guidelines derived from official advisory frameworks by LGM Consulting & Innovations.",
+      steps: [
+        {
+          num: '01',
+          title: 'Cross-Disciplinary Technical Expertise',
+          text: "Favor an advisory team with deep domain specialization coupled with adjacent expertise (cloud, data, industrial processes). This eliminates the need for multiple fragmented contractors."
+        },
+        {
+          num: '02',
+          title: 'Plurality of Strategic Methodologies',
+          text: "Evaluate how the team plans to solve your specific bottleneck. Strong advisors provide multiple options, preventing repeating past unsuccessful attempts."
+        },
+        {
+          num: '03',
+          title: 'Verifiable Real-World Track Record',
+          text: "Field case studies and proven client outcomes carry far greater weight than theoretical slide decks."
+        },
+        {
+          num: '04',
+          title: 'Senior Availability & Responsiveness',
+          text: "Confirm real bandwidth and dedicated availability, especially if your executive mandate requires rapid turnarounds and high confidentiality."
+        },
+        {
+          num: '05',
+          title: 'Measurable ROI & Transparent Billing',
+          text: "What matters is net enterprise value delivered against fees paid. Fee structures and deliverables must be clearly defined in upfront contracts."
+        }
+      ]
+    },
+    pt: {
+      title: "Guia Prático: Como Escolher a Consultoria Ideal",
+      subtitle: "Recomendações metodológicas estruturadas pela LGM Consulting & Innovations.",
+      steps: [
+        {
+          num: '01',
+          title: 'Expertise Técnica e Transversal',
+          text: "Priorize uma consultoria com especialização profunda e domínio de disciplinas correlatas (cloud, IA, engenharia de processos). Isso evita a contratação de múltiplos fornecedores dispersos."
+        },
+        {
+          num: '02',
+          title: 'Diversidade Metodológica',
+          text: "Avalie como a equipe pretende solucionar seus gargalos. Bons consultores estruturam diferentes caminhos viáveis, evitando erros do passado."
+        },
+        {
+          num: '03',
+          title: 'Casos Reais e Resultados Comprovados',
+          text: "Estudos de caso em campo e resultados mensuráveis têm muito mais valor do que relatórios teóricos abstratos."
+        },
+        {
+          num: '04',
+          title: 'Disponibilidade e Comprometimento',
+          text: "Certifique-se da dedicação real da equipe sênior, especialmente para mandatos corporativos de alta urgência e confidencialidade."
+        },
+        {
+          num: '05',
+          title: 'ROI Mensurável e Transparência Financeira',
+          text: "O que conta é o ganho líquido de valor frente ao valor investido. Estruturas de remuneração devem ser claras e contratuais desde o primeiro dia."
+        }
+      ]
+    }
+  };
+  const currentGuide = guideData[lang] || guideData.fr;
 
   return (
     <div style={{ position: 'relative' }}>
@@ -480,7 +585,7 @@ export function PricingPage({ onOpenBooking }) {
             Grille des Prix & Formules d'Accompagnement
           </h1>
           <p className="page-description">
-            Un appel téléphonique de découverte (30 min) est systématiquement offert et sans engagement avec Laurent Manouaba.
+            Toutes les prises de rendez-vous et sessions de cadrage stratégique sont payantes avec règlement sécurisé en ligne.
             Tarifs clairs, prévisibles et transparents sans coûts cachés.
           </p>
 
@@ -527,7 +632,7 @@ export function PricingPage({ onOpenBooking }) {
                 transform: tab === 'annual' ? 'scale(1)' : 'scale(0.98)'
               }}
             >
-              Suivi Entrepreneurial Annuel (3 Formules)
+              {t('pricingSection.annualTab')}
             </button>
             <button
               onClick={() => setTab('spot')}
@@ -546,7 +651,7 @@ export function PricingPage({ onOpenBooking }) {
                 transform: tab === 'spot' ? 'scale(1)' : 'scale(0.98)'
               }}
             >
-              Consultance Ponctuelle (3 Packs)
+              {t('pricingSection.spotTab')}
             </button>
           </div>
         </div>
@@ -724,7 +829,7 @@ export function PricingPage({ onOpenBooking }) {
                 margin: 0
               }}
             >
-              Guide Pratique : Comment Bien Choisir Votre Consultant
+              {currentGuide.title}
             </h2>
           </div>
 
@@ -738,7 +843,7 @@ export function PricingPage({ onOpenBooking }) {
               lineHeight: 1.6
             }}
           >
-            Recommandations méthodologiques issues de la synthèse officielle du cabinet Laurent G-M Manouaba.
+            {currentGuide.subtitle}
           </p>
 
           <div
@@ -748,33 +853,7 @@ export function PricingPage({ onOpenBooking }) {
               gap: '24px'
             }}
           >
-            {[
-              {
-                num: '01',
-                title: 'Expertise fonctionnelle & transversale',
-                text: "Privilégiez un consultant spécialiste d'un domaine mais aussi compétent dans les domaines voisins (électricité, informatique, génie des procédés). Cela évite souvent d'engager plusieurs personnes."
-              },
-              {
-                num: '02',
-                title: "Pluralité de méthodes d'approche",
-                text: "Demandez comment il compte résoudre le problème. Un bon consultant propose plusieurs méthodes, ce qui évite de refaire une approche déjà tentée sans succès."
-              },
-              {
-                num: '03',
-                title: 'Références réelles & cas concrets',
-                text: "Les études de cas et les retours d'expérience vérifiables valent infiniment mieux qu'un CV purement théorique."
-              },
-              {
-                num: '04',
-                title: 'Disponibilité & engagement',
-                text: 'Vérifiez sa charge de travail réelle, surtout si votre projet stratégique requiert un engagement exclusif et réactif.'
-              },
-              {
-                num: '05',
-                title: 'TJM & rentabilité mesurable',
-                text: "L'important est la valeur nette obtenue pour le prix payé. Les structures d'honoraires doivent être définies et contractualisées en amont."
-              }
-            ].map((item) => (
+            {currentGuide.steps.map((item) => (
               <div
                 key={item.num}
                 className="guide-step-card reveal-on-scroll"

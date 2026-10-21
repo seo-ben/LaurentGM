@@ -1,9 +1,10 @@
 import React from 'react';
-import { METRICS } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function MetricsTicker() {
+  const { metrics } = useLanguage();
   // Duplicate items for continuous smooth infinite scrolling
-  const tickerItems = [...METRICS, ...METRICS, ...METRICS];
+  const tickerItems = [...metrics, ...metrics, ...metrics];
 
   return (
     <section

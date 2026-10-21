@@ -3,6 +3,7 @@ import { useScrollReveal } from './hooks/useScrollReveal';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { WhatsAppBookingModal } from './components/WhatsAppBookingModal';
+import { PaymentSuccessModal } from './components/PaymentSuccessModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTop } from './components/ScrollToTop';
 
@@ -15,56 +16,56 @@ import { BlogPage } from './pages/BlogPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
 
-const PAGE_SEO = {
-  home: {
-    title: "Laurent G-M Manouaba | Où l’Innovation Rencontre la Rentabilité",
-    description: "Cabinet de conseil en innovations technologiques, IA et rentabilité opérationnelle dirigé par Laurent G-M Manouaba. Réservez votre audit stratégique de 30 min offert."
-  },
-  services: {
-    title: "12 Services & Expertises Technologiques | Laurent G-M Manouaba",
-    description: "Catalogue complet des 12 services : IA & Machine Learning, Big Data, R&D de rupture, audit d'architecture et stratégie de rentabilité opérationnelle."
-  },
-  realisations: {
-    title: "Galerie & Réalisations de Terrain | Laurent G-M Manouaba",
-    description: "Portfolio photographique et études de cas réels : ateliers pour dirigeants, audits stratégiques de rentabilité, R&D et keynotes de Laurent G-M Manouaba."
-  },
-  pricing: {
-    title: "Prix & Formules de Consultance 100% Transparentes | Laurent G-M Manouaba",
-    description: "Découvrez nos forfaits d'accompagnement moral annuel et nos packs d'intervention ponctuelle (Basic 90 $, Business 490 $, Premium 2000 $). Zéro frais caché."
-  },
-  about: {
-    title: "À Propos de Laurent G-M Manouaba | Parcours, Vision & Réseau d'Experts",
-    description: "Découvrez le parcours multidisciplinaire de Laurent Manouaba : ingénierie de pointe, immersion terrain et réseau actif de 67+ experts internationaux."
-  },
-  blog: {
-    title: "Blog & Publications de Prospective Technologique | Laurent G-M Manouaba",
-    description: "Articles et analyses approfondies sur Bitcoin, l'intelligence artificielle, la gestion de l'eustress et le management de la transformation numérique."
-  },
-  contact: {
-    title: "Contact & Prise de Rendez-vous | Laurent G-M Manouaba",
-    description: "Prenez rendez-vous directement pour un appel de cadrage stratégique gratuit de 30 minutes avec Laurent Manouaba. Réponse sous quelques heures."
-  },
-  studio: {
-    title: "LGM Studio — Administration Privée | Laurent G-M Manouaba",
-    description: "Espace privé d'administration Laurent G-M Manouaba."
-  }
-};
+import { useLanguage } from './i18n/LanguageContext';
 
 export default function App() {
+  const { pageSeo, lang } = useLanguage();
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined' && window.location.hash) {
       const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (PAGE_SEO[hash]) return hash;
+      const validPages = ['home', 'services', 'realisations', 'pricing', 'about', 'blog', 'contact', 'studio'];
+      if (validPages.includes(hash)) return hash;
     }
     return 'home';
   });
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [bookingData, setBookingData] = useState(null);
+  const [paymentSuccessOpen, setPaymentSuccessOpen] = useState(false);
 
-  // Dynamic SEO, title and meta description update on every page change
+  // Détection du retour de paiement Stripe (?paiement=succes ou ?payment=success ou #paiement-succes)
   useEffect(() => {
-    const seo = PAGE_SEO[currentPage] || PAGE_SEO.home;
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const hasPaiementSucces =
+      params.get('paiement') === 'succes' ||
+      params.get('payment') === 'success' ||
+      window.location.hash === '#paiement-succes';
+
+    if (hasPaiementSucces) {
+      setPaymentSuccessOpen(true);
+    }
+  }, []);
+
+  const handleClosePaymentSuccess = () => {
+    setPaymentSuccessOpen(false);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('paiement');
+      url.searchParams.delete('payment');
+      if (url.hash === '#paiement-succes') {
+        url.hash = '';
+      }
+      history.replaceState(null, '', url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : ''));
+    }
+  };
+
+  // Dynamic SEO, title and meta description update on every page change AND language change
+  useEffect(() => {
+    const seo = (pageSeo && pageSeo[currentPage]) || (pageSeo && pageSeo.home) || {
+      title: "LGM Consulting | Innovation & Rentabilité",
+      description: "Cabinet de conseil en innovations technologiques, IA et rentabilité opérationnelle."
+    };
     document.title = seo.title;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', seo.description);
@@ -72,6 +73,10 @@ export default function App() {
     if (ogTitle) ogTitle.setAttribute('content', seo.title);
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', seo.description);
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', seo.title);
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', seo.description);
 
     if (currentPage === 'home') {
       if (window.location.hash) {
@@ -83,13 +88,14 @@ export default function App() {
       }
     }
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentPage, lang, pageSeo]);
 
   // Handle browser back/forward and deep link hash changes
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (PAGE_SEO[hash]) {
+      const validPages = ['home', 'services', 'realisations', 'pricing', 'about', 'blog', 'contact', 'studio'];
+      if (validPages.includes(hash)) {
         setCurrentPage(hash);
       } else if (!hash) {
         setCurrentPage('home');
@@ -102,7 +108,7 @@ export default function App() {
   // Observe and animate scroll-revealed elements (cards, text, images) on every page change
   useScrollReveal([currentPage]);
 
-  const handleOpenBooking = (payload = 'Audit Découverte Initial Offert') => {
+  const handleOpenBooking = (payload = 'Consultation Stratégique (90 $)') => {
     if (typeof payload === 'object' && payload !== null) {
       setBookingData(payload);
       setSelectedSubject(payload.subject || payload.planName || '');
@@ -167,6 +173,12 @@ export default function App() {
         onClose={handleCloseBooking}
         initialSubject={selectedSubject}
         bookingData={bookingData}
+      />
+
+      {/* Modale Succès Paiement Stripe avec notification WhatsApp immédiate au cabinet */}
+      <PaymentSuccessModal
+        isOpen={paymentSuccessOpen}
+        onClose={handleClosePaymentSuccess}
       />
 
       {/* Floating WhatsApp Quick Contact Button */}

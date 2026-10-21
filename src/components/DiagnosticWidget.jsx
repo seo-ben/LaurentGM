@@ -1,31 +1,171 @@
 import React, { useState } from 'react';
 import { HelpCircle, CheckCircle2, ArrowRight, RotateCcw, MessageSquare, Sparkles } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function DiagnosticWidget({ onOpenBooking }) {
+  const { lang, t } = useLanguage();
   const [step, setStep] = useState(1);
   const [profile, setProfile] = useState('');
   const [challenge, setChallenge] = useState('');
   const [timeframe, setTimeframe] = useState('');
 
-  const profiles = [
-    { id: 'solo', label: 'Indépendant / Porteur de projet', desc: 'Individu en quête de méthode et d’orientation' },
-    { id: 'tpe', label: 'TPE / Startup (≤ 5 salariés)', desc: 'Structure agile voulant structurer ses outils' },
-    { id: 'pme', label: 'PME en expansion (5 à 15 salariés)', desc: 'Optimisation de marge et intégration tech' },
-    { id: 'grand', label: 'Entreprise > 15 salariés / International', desc: 'Défis stratégiques et restructuration d’envergure' }
-  ];
+  const DATA_BY_LANG = {
+    fr: {
+      title: "Auto-Diagnostic Stratégique en 3 Clics",
+      subtitle: "Répondez à 3 questions pour identifier la formule d’accompagnement la plus rentable pour votre stade de maturité technologique.",
+      stepLabel: (s) => s <= 3 ? `Étape ${s} sur 3` : 'Résultat de votre diagnostic',
+      backBtn: "← Retour à l’étape précédente",
+      restartBtn: "Recommencer",
+      recBadge: "Formule Recommandée pour votre profil",
+      synthesisLabel: "Synthèse de votre besoin :",
+      submitBtn: "Transmettre ce bilan au cabinet",
+      step1Title: "1. Quelle est la typologie de votre structure ?",
+      step1Sub: "Sélectionnez votre situation pour calibrer l’échelle de l’intervention.",
+      profiles: [
+        { id: 'solo', label: 'Indépendant / Porteur de projet', desc: 'Individu en quête de méthode et d’orientation' },
+        { id: 'tpe', label: 'TPE / Startup (≤ 5 salariés)', desc: 'Structure agile voulant structurer ses outils' },
+        { id: 'pme', label: 'PME en expansion (5 à 15 salariés)', desc: 'Optimisation de marge et intégration tech' },
+        { id: 'grand', label: 'Entreprise > 15 salariés / International', desc: 'Défis stratégiques et restructuration d’envergure' }
+      ],
+      step2Title: "2. Quel est votre enjeu prioritaire du moment ?",
+      step2Sub: "Le verrou ou l’opportunité à débloquer en premier lieu.",
+      challenges: [
+        { id: 'ia', label: 'Automatiser des processus avec l’IA', desc: 'Gagner du temps sur les tâches chronophages' },
+        { id: 'data', label: 'Structurer et exploiter nos données', desc: 'Sortir du flou pour piloter nos performances' },
+        { id: 'marge', label: 'Optimiser nos marges & supply-chain', desc: 'Améliorer la rentabilité des opérations' },
+        { id: 'rupture', label: 'Lancer un nouveau produit / Innovation', desc: 'Valider la faisabilité technique et le marché' }
+      ],
+      step3Title: "3. À quel horizon souhaitez-vous démarrer ?",
+      step3Sub: "Permet de calibrer le calendrier d’intervention du cabinet.",
+      timeframes: [
+        { id: 'urgent', label: 'Immédiat (Ce mois-ci)', desc: 'Besoin de solutions opérationnelles rapides' },
+        { id: 'court', label: '1 à 3 mois', desc: 'Projet planifié nécessitant un cadrage solide' },
+        { id: 'veille', label: 'Veille & Prospective (3 à 6 mois)', desc: 'Anticipation des ruptures de marché' }
+      ],
+      recommendations: {
+        solo: {
+          plan: 'Suivi Individuel (100 $/an) ou Consultation Basic (90 $)',
+          why: 'Une formule légère et économique pour clarifier votre feuille de route sans engager de lourds budgets.'
+        },
+        tpe: {
+          plan: 'Accompagnement Petite Entreprise (200 $/an) ou Pack Business (490 $)',
+          why: 'L’idéal pour disposer d’une direction technique externalisée et tester vos scénarios d’évolution.'
+        },
+        pme: {
+          plan: 'Accompagnement PME Recommandé (600 $/an) ou Pack Business (490 $)',
+          why: 'La solution la plus complète pour aligner vos équipes, intégrer l’IA et sécuriser vos marges.'
+        },
+        grand: {
+          plan: 'Consultation Stratégique Premium (2 000 $) ou Accompagnement Grands Projets',
+          why: 'Une immersion intensive de 336 heures d’investigation avec étude comparative de scénarios.'
+        }
+      }
+    },
+    en: {
+      title: "3-Step Strategic Tech Diagnostic",
+      subtitle: "Answer 3 quick questions to identify the highest-ROI advisory tier for your stage of growth.",
+      stepLabel: (s) => s <= 3 ? `Step ${s} of 3` : 'Your Diagnostic Result',
+      backBtn: "← Back to previous step",
+      restartBtn: "Restart Test",
+      recBadge: "Recommended Advisory Formula",
+      synthesisLabel: "Summary of your needs:",
+      submitBtn: "Submit this assessment to our firm",
+      step1Title: "1. What is the scale of your organization?",
+      step1Sub: "Select your profile to accurately size the advisory scope.",
+      profiles: [
+        { id: 'solo', label: 'Solo Founder / Specialist', desc: 'Professional seeking method, guidance and orientation' },
+        { id: 'tpe', label: 'Startup / Small Team (≤ 5 staff)', desc: 'Agile team requiring fractional CTO guidance' },
+        { id: 'pme', label: 'Growing SMB (5 to 15 staff)', desc: 'Margin optimization, data governance, and AI integration' },
+        { id: 'grand', label: 'Large Enterprise (> 15 staff) / Global', desc: 'Complex strategic challenges and organizational restructuring' }
+      ],
+      step2Title: "2. What is your primary priority bottleneck?",
+      step2Sub: "The core challenge or market opportunity to unlock first.",
+      challenges: [
+        { id: 'ia', label: 'Automate workflows with AI', desc: 'Save critical time on repetitive operational tasks' },
+        { id: 'data', label: 'Structure & monetize corporate data', desc: 'Eliminate blind spots with automated executive dashboards' },
+        { id: 'marge', label: 'Optimize operating margins & supply chain', desc: 'Directly increase net cash flow and efficiency' },
+        { id: 'rupture', label: 'Launch disruptive product / Deep-tech R&D', desc: 'Validate technical feasibility and business model' }
+      ],
+      step3Title: "3. What is your desired timeline?",
+      step3Sub: "Enables our consultants to schedule dedicated team capacity.",
+      timeframes: [
+        { id: 'urgent', label: 'Immediate (This month)', desc: 'Need rapid, pragmatic operational answers' },
+        { id: 'court', label: '1 to 3 months', desc: 'Planned initiative requiring thorough strategic scoping' },
+        { id: 'veille', label: 'Exploration & Foresight (3 to 6 months)', desc: 'Proactive anticipation of technology shifts' }
+      ],
+      recommendations: {
+        solo: {
+          plan: 'Individual Retainer ($100/yr) or Basic Consultation ($90)',
+          why: 'A lean, budget-conscious plan to clarify your tech roadmap without heavy financial commitments.'
+        },
+        tpe: {
+          plan: 'Small Business Retainer ($200/yr) or Business Package ($490)',
+          why: 'Ideal for securing an external fractional CTO to stress-test your tech decisions.'
+        },
+        pme: {
+          plan: 'Recommended SMB Retainer ($600/yr) or Business Package ($490)',
+          why: 'The complete solution to align engineering, integrate AI, and protect operating margins.'
+        },
+        grand: {
+          plan: 'Premium Strategic Package ($2,000) or Large Enterprise Mandate',
+          why: 'An intensive 336-hour field immersion with comprehensive multi-scenario modeling.'
+        }
+      }
+    },
+    pt: {
+      title: "Auto-Diagnóstico Estratégico em 3 Cliques",
+      subtitle: "Responda a 3 perguntas rápidas para descobrir o plano de consultoria com maior retorno para o seu momento.",
+      stepLabel: (s) => s <= 3 ? `Etapa ${s} de 3` : 'Resultado do seu diagnóstico',
+      backBtn: "← Voltar à etapa anterior",
+      restartBtn: "Refazer teste",
+      recBadge: "Plano Recomendado para o seu perfil",
+      synthesisLabel: "Resumo da sua necessidade:",
+      submitBtn: "Enviar este diagnóstico para a consultoria",
+      step1Title: "1. Qual é o porte da sua organização?",
+      step1Sub: "Selecione o seu perfil para calibrar a escala da consultoria.",
+      profiles: [
+        { id: 'solo', label: 'Profissional Autônomo / Fundador Solo', desc: 'Em busca de orientação técnica e método claro' },
+        { id: 'tpe', label: 'Startup / Microempresa (≤ 5 pessoas)', desc: 'Estrutura ágil necessitando de direção tecnológica (Fractional CTO)' },
+        { id: 'pme', label: 'PME em Expansão (5 a 15 pessoas)', desc: 'Otimização de margem, governança de dados e IA' },
+        { id: 'grand', label: 'Média/Grande Empresa (> 15 pessoas) / Global', desc: 'Projetos complexos e reestruturação corporativa' }
+      ],
+      step2Title: "2. Qual é a sua prioridade imediata?",
+      step2Sub: "O gargalo ou a oportunidade central que precisa destravar primeiro.",
+      challenges: [
+        { id: 'ia', label: 'Automatizar processos com Inteligência Artificial', desc: 'Economizar tempo em tarefas repetitivas' },
+        { id: 'data', label: 'Estruturar e monetizar o patrimônio de dados', desc: 'Tomar decisões com indicadores confiáveis em tempo real' },
+        { id: 'marge', label: 'Otimizar margens e cadeia de suprimentos', desc: 'Aumentar a lucratividade operacional do negócio' },
+        { id: 'rupture', label: 'Lançar novo produto inovador / P&D', desc: 'Validar viabilidade técnica e posicionamento de mercado' }
+      ],
+      step3Title: "3. Em quanto tempo pretende iniciar?",
+      step3Sub: "Permite dimensionar a disponibilidade da equipe de consultores.",
+      timeframes: [
+        { id: 'urgent', label: 'Imediato (Neste mês)', desc: 'Necessidade de soluções práticas e rápidas' },
+        { id: 'court', label: '1 a 3 meses', desc: 'Projeto planejado que exige enquadramento prévio' },
+        { id: 'veille', label: 'Exploração e Tendências (3 a 6 meses)', desc: 'Antecipação de rupturas tecnológicas futuras' }
+      ],
+      recommendations: {
+        solo: {
+          plan: 'Acompanhamento Individual (100 $/ano) ou Consulta Básica (90 $)',
+          why: 'Uma fórmula enxuta e econômica para estruturar sua rota tecnológica com baixo investimento.'
+        },
+        tpe: {
+          plan: 'Acompanhamento Pequena Empresa (200 $/ano) ou Pacote Business (490 $)',
+          why: 'Ideal para ter um diretor de tecnologia externo e avaliar seus cenários de crescimento.'
+        },
+        pme: {
+          plan: 'Acompanhamento PME Recomendado (600 $/ano) ou Pacote Business (490 $)',
+          why: 'A solução ideal para alinhar suas equipes, adotar IA e proteger suas margens financeiras.'
+        },
+        grand: {
+          plan: 'Consultoria Estratégica Premium (2.000 $) ou Grandes Projetos',
+          why: 'Uma imersão intensiva de 336 horas com estudo comparativo aprofundado de cenários.'
+        }
+      }
+    }
+  };
 
-  const challenges = [
-    { id: 'ia', label: 'Automatiser des processus avec l’IA', desc: 'Gagner du temps sur les tâches chronophages' },
-    { id: 'data', label: 'Structurer et exploiter nos données', desc: 'Sortir du flou pour piloter nos performances' },
-    { id: 'marge', label: 'Optimiser nos marges & supply-chain', desc: 'Améliorer la rentabilité des opérations' },
-    { id: 'rupture', label: 'Lancer un nouveau produit / Innovation', desc: 'Valider la faisabilité technique et le marché' }
-  ];
-
-  const timeframes = [
-    { id: 'urgent', label: 'Immédiat (Ce mois-ci)', desc: 'Besoin de solutions opérationnelles rapides' },
-    { id: 'court', label: '1 à 3 mois', desc: 'Projet planifié nécessitant un cadrage solide' },
-    { id: 'veille', label: 'Veille & Prospective (3 à 6 mois)', desc: 'Anticipation des ruptures de marché' }
-  ];
+  const d = DATA_BY_LANG[lang] || DATA_BY_LANG.fr;
 
   const reset = () => {
     setStep(1);
@@ -35,31 +175,12 @@ export function DiagnosticWidget({ onOpenBooking }) {
   };
 
   const getRecommendation = () => {
-    if (profile === 'solo') {
-      return {
-        plan: 'Suivi Physique Individu (100 $/an) ou Consultance Basic (90 $)',
-        why: 'Une formule légère et économique pour clarifier votre feuille de route sans engager de lourds budgets.',
-        ctaPayload: `Diagnostic : Indépendant | Défi : ${challenge} | Horizon : ${timeframe}`
-      };
-    } else if (profile === 'tpe') {
-      return {
-        plan: 'Suivi Moral Petite Entreprise (200 $/an) ou Consultance Business (490 $)',
-        why: 'L’idéal pour disposer d’une direction technique externalisée et tester vos scénarios d’évolution.',
-        ctaPayload: `Diagnostic : TPE ≤ 5 salariés | Défi : ${challenge} | Horizon : ${timeframe}`
-      };
-    } else if (profile === 'pme') {
-      return {
-        plan: 'Suivi Moral PME Recommandé (600 $/an) ou Consultance Business (490 $)',
-        why: 'La solution la plus complète pour aligner vos équipes, intégrer l’IA et sécuriser vos marges.',
-        ctaPayload: `Diagnostic : PME 5-15 salariés | Défi : ${challenge} | Horizon : ${timeframe}`
-      };
-    } else {
-      return {
-        plan: 'Consultance Premium (2 000 $) ou Accompagnement Grands Projets',
-        why: 'Une immersion intensive de 336 heures d’investigation avec étude comparative de scénarios.',
-        ctaPayload: `Diagnostic : Grande Entreprise | Défi : ${challenge} | Horizon : ${timeframe}`
-      };
-    }
+    const rec = d.recommendations[profile] || d.recommendations.pme;
+    return {
+      plan: rec.plan,
+      why: rec.why,
+      ctaPayload: `${profile} | ${challenge} | ${timeframe}`
+    };
   };
 
   return (
@@ -67,11 +188,10 @@ export function DiagnosticWidget({ onOpenBooking }) {
       <div className="container">
         <div className="section-center reveal-on-scroll">
           <h2 className="section-title">
-            Auto-Diagnostic Stratégique en 3 Clics
+            {d.title}
           </h2>
           <p className="section-subtitle">
-            Répondez à 3 questions pour identifier la formule d’accompagnement la plus rentable
-            pour votre stade de maturité technologique.
+            {d.subtitle}
           </p>
         </div>
 
@@ -89,7 +209,7 @@ export function DiagnosticWidget({ onOpenBooking }) {
           {/* Progress Indicator */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
             <span style={{ fontSize: '0.84rem', fontWeight: '700', color: 'var(--color-brand-primary)', textTransform: 'uppercase' }}>
-              {step <= 3 ? `Étape ${step} sur 3` : 'Résultat de votre diagnostic'}
+              {d.stepLabel(step)}
             </span>
             <div style={{ display: 'flex', gap: '6px' }}>
               {[1, 2, 3].map((s) => (
@@ -111,14 +231,14 @@ export function DiagnosticWidget({ onOpenBooking }) {
           {step === 1 && (
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '8px' }}>
-                1. Quelle est la typologie de votre structure ?
+                {d.step1Title}
               </h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                Sélectionnez votre situation pour calibrer l’échelle de l’intervention.
+                {d.step1Sub}
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
-                {profiles.map((p) => (
+                {d.profiles.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => {
@@ -153,14 +273,14 @@ export function DiagnosticWidget({ onOpenBooking }) {
           {step === 2 && (
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '8px' }}>
-                2. Quel est votre enjeu prioritaire du moment ?
+                {d.step2Title}
               </h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                Le verrou ou l’opportunité à débloquer en premier lieu.
+                {d.step2Sub}
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
-                {challenges.map((c) => (
+                {d.challenges.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => {
@@ -203,7 +323,7 @@ export function DiagnosticWidget({ onOpenBooking }) {
                   gap: '6px'
                 }}
               >
-                <span>← Retour à l’étape précédente</span>
+                <span>{d.backBtn}</span>
               </button>
             </div>
           )}
@@ -212,18 +332,18 @@ export function DiagnosticWidget({ onOpenBooking }) {
           {step === 3 && (
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '8px' }}>
-                3. À quel horizon souhaitez-vous démarrer ?
+                {d.step3Title}
               </h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                Permet de déterminer la disponibilité requise de l’équipe de Laurent Manouaba.
+                {d.step3Sub}
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
-                {timeframes.map((t) => (
+                {d.timeframes.map((tItem) => (
                   <button
-                    key={t.id}
+                    key={tItem.id}
                     onClick={() => {
-                      setTimeframe(t.label);
+                      setTimeframe(tItem.label);
                       setStep(4);
                     }}
                     style={{
@@ -231,7 +351,7 @@ export function DiagnosticWidget({ onOpenBooking }) {
                       padding: '16px',
                       borderRadius: 'var(--radius-md)',
                       border: '1px solid var(--border-subtle)',
-                      backgroundColor: timeframe === t.label ? 'var(--color-brand-light)' : '#ffffff',
+                      backgroundColor: timeframe === tItem.label ? 'var(--color-brand-light)' : '#ffffff',
                       cursor: 'pointer',
                       transition: 'all 0.2s ease'
                     }}
@@ -239,10 +359,10 @@ export function DiagnosticWidget({ onOpenBooking }) {
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-subtle)')}
                   >
                     <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
-                      {t.label}
+                      {tItem.label}
                     </div>
                     <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                      {t.desc}
+                      {tItem.desc}
                     </div>
                   </button>
                 ))}
@@ -262,7 +382,7 @@ export function DiagnosticWidget({ onOpenBooking }) {
                   gap: '6px'
                 }}
               >
-                <span>← Retour à l’étape précédente</span>
+                <span>{d.backBtn}</span>
               </button>
             </div>
           )}
@@ -296,7 +416,7 @@ export function DiagnosticWidget({ onOpenBooking }) {
                         }}
                       >
                         <Sparkles size={16} />
-                        <span>Formule Recommandée pour votre profil</span>
+                        <span>{d.recBadge}</span>
                       </div>
 
                       <h4
@@ -324,27 +444,27 @@ export function DiagnosticWidget({ onOpenBooking }) {
                           border: '1px solid rgba(15, 23, 42, 0.08)'
                         }}
                       >
-                        <strong>Synthèse de votre besoin :</strong> {rec.ctaPayload}
+                        <strong>{d.synthesisLabel}</strong> {rec.ctaPayload}
                       </div>
                     </div>
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'center' }}>
                       <button
-                        onClick={() => onOpenBooking(`Résultat Auto-Diagnostic : ${rec.plan} (${rec.ctaPayload})`)}
+                        onClick={() => onOpenBooking(`Diagnostic: ${rec.plan} (${rec.ctaPayload})`)}
                         className="btn btn-whatsapp btn-lg"
                         style={{ flex: '1 1 auto' }}
                       >
                         <MessageSquare size={18} />
-                        <span>Transmettre ce bilan à Laurent Manouaba</span>
+                        <span>{d.submitBtn}</span>
                       </button>
 
                       <button
                         onClick={reset}
                         className="btn btn-outline"
-                        title="Recommencer le diagnostic"
+                        title={d.restartBtn}
                       >
                         <RotateCcw size={16} />
-                        <span>Recommencer</span>
+                        <span>{d.restartBtn}</span>
                       </button>
                     </div>
                   </div>

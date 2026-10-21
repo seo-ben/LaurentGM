@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, ArrowRight, CheckCircle2, ShieldCheck, MapPin, Award } from 'lucide-react';
+import { MessageSquare, ArrowRight, CheckCircle2, ShieldCheck, MapPin, Award, Calendar } from 'lucide-react';
 import { CONTACT_INFO } from '../data/content';
 import { PartnersMarquee } from '../components/PartnersMarquee';
 import { MetricsTicker } from '../components/MetricsTicker';
@@ -20,7 +20,7 @@ export function HomePage({ onNavigate, onOpenBooking }) {
       {/* Pourquoi confier votre transformation technologique au cabinet - Bento Grid d'Élite */}
       <WhyUsBento onNavigate={onNavigate} />
 
-      {/* Galerie des Réalisations de Laurent Manouaba sur le terrain */}
+      {/* Galerie des Réalisations de terrain LGM */}
       <RealisationsSection onNavigate={onNavigate} onOpenBooking={onOpenBooking} />
 
 
@@ -56,11 +56,11 @@ export function HomePage({ onNavigate, onOpenBooking }) {
                 lineHeight: 1.65
               }}
             >
-              L'appel initial de découverte de 30 minutes est entièrement gratuit et sans engagement.
-              Échangez directement avec Laurent Manouaba.
+              Toutes les prises de rendez-vous et sessions de cadrage stratégique sont payantes, avec règlement sécurisé en ligne.
+              Bénéficiez d'une étude approfondie et personnalisée pour structurer vos projets technologiques.
             </p>
             <button
-              onClick={() => onOpenBooking('Audit Initial Gratuit')}
+              onClick={() => onNavigate('contact')}
               className="btn btn-whatsapp btn-lg"
               style={{
                 display: 'inline-flex',
@@ -69,8 +69,8 @@ export function HomePage({ onNavigate, onOpenBooking }) {
                 boxShadow: '0 8px 24px rgba(37, 211, 102, 0.28)'
               }}
             >
-              <MessageSquare size={20} />
-              <span>Démarrer la discussion (+228 90 44 55 71)</span>
+              <Calendar size={20} />
+              <span>Prendre Rendez-vous</span>
             </button>
           </div>
         </div>

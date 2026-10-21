@@ -9,21 +9,21 @@ export const DEFAULT_HERO_SLIDES = [
     id: 'suit',
     role: 'Consultant en Technologies & Stratégie',
     image: '/assets/avatar-suit.png',
-    alt: 'Laurent G-M Manouaba - Consultant en Innovations Technologiques',
+    alt: 'LGM Consulting - Consultant en Innovations Technologiques',
     objectPosition: 'center 15%'
   },
   {
     id: 'workshop',
     role: 'R&D & Transfert Opérationnel',
     image: '/assets/workshop-meeting.jpg',
-    alt: 'Session d\'atelier collaboratif et R&D Laurent Manouaba',
+    alt: 'Session d\'atelier collaboratif et R&D en entreprise',
     objectPosition: 'center center'
   },
   {
     id: 'desk',
     role: 'Ingénierie IA & Modélisation Sur-Mesure',
     image: '/assets/avatar-desk.png',
-    alt: 'Laurent G-M Manouaba au bureau - Modélisation & IA',
+    alt: 'Laboratoire R&D LGM Consulting - Modélisation & IA',
     objectPosition: 'center top'
   }
 ];

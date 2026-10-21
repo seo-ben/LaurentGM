@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Maximize2 } from 'lucide-react';
-import { REALISATION_CATEGORIES } from '../data/content';
 import { getStoredRealisations } from '../utils/slidesStorage';
 import { RealisationModal } from '../components/RealisationModal';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function RealisationsPage({ onOpenBooking }) {
+  const { realisations, realisationCategories, t } = useLanguage();
   const [items, setItems] = useState(() => getStoredRealisations());
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Fusion dynamique des images stockées avec les textes traduits
+  const localizedItems = useMemo(() => {
+    return items.map((item) => {
+      const trans = realisations.find((r) => r.id === item.id);
+      return trans ? { ...item, ...trans, image: item.image || trans.image } : item;
+    });
+  }, [items, realisations]);
 
   // Écoute les modifications de la galerie depuis l'Espace Admin
   useEffect(() => {
@@ -20,8 +29,8 @@ export function RealisationsPage({ onOpenBooking }) {
   }, []);
 
   const filteredItems = activeCategory === 'all'
-    ? items
-    : items.filter((item) => item.category === activeCategory);
+    ? localizedItems
+    : localizedItems.filter((item) => item.category === activeCategory);
 
   // Trigger fluid emergence from left/right whenever category changes or page loads
   useEffect(() => {
@@ -60,10 +69,10 @@ export function RealisationsPage({ onOpenBooking }) {
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">
-            Galerie des Réalisations sur le Terrain
+            {t('realisationsSection.title')}
           </h1>
           <p className="page-description">
-            Explorez en photographies les ateliers pratiques, conférences, audits d'architecture et projets R&D dirigés par Laurent G-M Manouaba.
+            {t('realisationsSection.subtitle')}
           </p>
         </div>
       </div>
@@ -88,7 +97,7 @@ export function RealisationsPage({ onOpenBooking }) {
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          {REALISATION_CATEGORIES.map((cat) => {
+          {realisationCategories.map((cat) => {
             const isActive = activeCategory === cat.id;
             const count = cat.id === 'all'
               ? items.length

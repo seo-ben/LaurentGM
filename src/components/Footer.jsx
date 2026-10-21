@@ -2,8 +2,11 @@ import React from 'react';
 import { MapPin, Phone, Mail, Calendar, MessageSquare, ExternalLink, Shield, Lock } from 'lucide-react';
 import { CONTACT_INFO } from '../data/content';
 import { LinkedinIcon, FacebookIcon, TwitterXIcon, WhatsappIcon } from './SocialIcons';
+import { useLanguage } from '../i18n/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 export function Footer({ onNavigate, onOpenBooking }) {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   const handleNav = (page) => {
@@ -52,34 +55,33 @@ export function Footer({ onNavigate, onOpenBooking }) {
                 <img src="/assets/logo.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', fontWeight: '800', color: '#ffffff' }}>
-                Laurent G-M Manouaba
+                LGM Consulting & Innovations
               </div>
             </div>
 
             <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '16px' }}>
-              {CONTACT_INFO.tagline}
+              {t('footer.tagline')}
             </p>
 
             <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.6 }}>
-              Cabinet de conseil en innovations technologiques, IA et performance industrielle.
-              Accompagnement local dans une démarche globale.
+              {t('footer.desc')}
             </p>
           </div>
 
           {/* Site Navigation */}
           <div>
             <h4 style={{ fontSize: '1rem', fontWeight: '800', color: '#ffffff', marginBottom: '16px' }}>
-              Pages du Site
+              {t('footer.navigation')}
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
               {[
-                { id: 'home', label: 'Accueil' },
-                { id: 'services', label: '12 Services & Expertises' },
-                { id: 'realisations', label: 'Galerie & Réalisations' },
-                { id: 'pricing', label: 'Prix & Formules' },
-                { id: 'about', label: 'À Propos de Laurent' },
-                { id: 'blog', label: 'Blog & Articles' },
-                { id: 'contact', label: 'Contact & Rendez-vous' }
+                { id: 'home', label: t('nav.home') },
+                { id: 'services', label: t('nav.services') },
+                { id: 'realisations', label: t('nav.realisations') },
+                { id: 'pricing', label: t('nav.pricing') },
+                { id: 'about', label: t('nav.about') },
+                { id: 'blog', label: t('nav.blog') },
+                { id: 'contact', label: t('nav.contact') }
               ].map((link) => (
                 <li key={link.id}>
                   <button
@@ -133,11 +135,11 @@ export function Footer({ onNavigate, onOpenBooking }) {
               Prise de Contact
             </h4>
             <button
-              onClick={() => onOpenBooking('Prise de contact depuis le footer')}
+              onClick={() => handleNav('contact')}
               className="btn btn-whatsapp btn-block btn-sm"
               style={{ marginBottom: '12px' }}
             >
-              <MessageSquare size={16} />
+              <Calendar size={16} />
               <span>Prendre Rendez-vous</span>
             </button>
 
@@ -208,7 +210,11 @@ export function Footer({ onNavigate, onOpenBooking }) {
           }}
         >
           <div>
-            © {currentYear} Laurent G-M Manouaba • Tous droits réservés.
+            © {currentYear} LGM Consulting & Innovations • {t('footer.copyright')}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>{t('footer.langChoice')}</span>
+            <LanguageSelector variant="footer" />
           </div>
         </div>
       </div>

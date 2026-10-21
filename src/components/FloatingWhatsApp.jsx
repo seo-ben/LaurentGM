@@ -1,9 +1,44 @@
 import React, { useState } from 'react';
 import { MessageSquare, X } from 'lucide-react';
-import { CONTACT_INFO } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function FloatingWhatsApp({ onOpenBooking }) {
+  const { lang } = useLanguage();
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const texts = {
+    fr: {
+      tooltipBold: "Défi tech ou IA ?",
+      tooltipText: " Consultation stratégique avec nos experts (règlement Stripe sécurisé).",
+      bookingSubject: "Consultation Stratégique (90 $)",
+      floatingSubject: "Prise de contact rapide via bulle flottante",
+      ariaLabel: "Prendre contact avec notre cabinet",
+      closeLabel: "Fermer"
+    },
+    en: {
+      tooltipBold: "Tech or AI challenge?",
+      tooltipText: " Strategic consultation with our senior advisors (secure Stripe checkout).",
+      bookingSubject: "Strategic Consultation ($90)",
+      floatingSubject: "Quick inquiry via floating messenger",
+      ariaLabel: "Contact our advisory firm",
+      closeLabel: "Close"
+    },
+    pt: {
+      tooltipBold: "Desafio tech ou IA?",
+      tooltipText: " Consultoria estratégica com nossos especialistas (pagamento seguro via Stripe).",
+      bookingSubject: "Consultoria Estratégica (US$ 90)",
+      floatingSubject: "Contato rápido via botão flutuante",
+      ariaLabel: "Entrar em contato com nossa consultoria",
+      closeLabel: "Fechar"
+    }
+  }[lang] || {
+    tooltipBold: "Défi tech ou IA ?",
+    tooltipText: " Consultation stratégique avec nos experts (règlement Stripe sécurisé).",
+    bookingSubject: "Consultation Stratégique (90 $)",
+    floatingSubject: "Prise de contact rapide via bulle flottante",
+    ariaLabel: "Prendre contact avec notre cabinet",
+    closeLabel: "Fermer"
+  };
 
   return (
     <div
@@ -21,7 +56,7 @@ export function FloatingWhatsApp({ onOpenBooking }) {
       {/* Floating high-converting hook pill */}
       {showTooltip && (
         <div
-          onClick={() => onOpenBooking('Audit Stratégique Offert (30 min)')}
+          onClick={() => onOpenBooking(texts.bookingSubject)}
           style={{
             backgroundColor: '#ffffff',
             borderRadius: 'var(--radius-lg)',
@@ -56,14 +91,14 @@ export function FloatingWhatsApp({ onOpenBooking }) {
             }}
           />
           <div style={{ flex: 1, color: 'var(--text-primary)', lineHeight: 1.35 }}>
-            <strong>Défi tech ou IA ?</strong> Audit stratégique offert sous 24h pour booster votre rentabilité.
+            <strong>{texts.tooltipBold}</strong>{texts.tooltipText}
           </div>
           <button
             onClick={(e) => {
               e.stopPropagation();
               setShowTooltip(false);
             }}
-            aria-label="Fermer"
+            aria-label={texts.closeLabel}
             style={{
               background: 'none',
               border: 'none',
@@ -82,9 +117,9 @@ export function FloatingWhatsApp({ onOpenBooking }) {
 
       {/* Main floating action button */}
       <button
-        onClick={() => onOpenBooking('Prise de contact rapide via bulle flottante')}
+        onClick={() => onOpenBooking(texts.floatingSubject)}
         className="btn-whatsapp"
-        aria-label="Prendre contact avec Laurent Manouaba"
+        aria-label={texts.ariaLabel}
         style={{
           width: '60px',
           height: '60px',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, CheckCircle2, Sparkles, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 /**
  * Hook personnalisé pour calculer la progression de défilement bidirectionnelle (scroll vers le bas ET vers le haut)
@@ -313,7 +314,7 @@ function EditorialStoryRow({
               e.currentTarget.style.gap = '8px';
             }}
           >
-            <span>Découvrir la philosophie d'accompagnement de Laurent Manouaba</span>
+            <span>{story.ctaText || (lang === 'en' ? "Discover our advisory philosophy" : lang === 'pt' ? "Conheça nossa metodologia de atuação" : "Découvrir notre philosophie d'accompagnement")}</span>
             <ArrowRight size={16} />
           </button>
         )}
@@ -351,23 +352,12 @@ function EditorialStoryRow({
   );
 }
 
-export function WhyUsBento({ onNavigate }) {
-  const headerRef = useRef(null);
-  const headerProgress = useRowScrollProgress(headerRef);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const stories = [
+const STORIES_BY_LANG = {
+  fr: [
     {
       id: 1,
       image: '/assets/tech-prospective.jpg',
-      alt: 'Prospective technologique et veille algorithmique - Laurent Manouaba',
+      alt: 'Prospective technologique et veille algorithmique',
       title: 'Veille technologique permanente & prospective scientifique',
       badge: {
         label: 'Prospective R&D',
@@ -387,7 +377,7 @@ export function WhyUsBento({ onNavigate }) {
     {
       id: 2,
       image: '/assets/strategic-audit.jpg',
-      alt: 'Audit stratégique et optimisation financière - Laurent Manouaba',
+      alt: 'Audit stratégique et optimisation financière',
       title: 'Audit sans complaisance & rationalisation des budgets technologiques',
       badge: {
         label: 'Impact Trésorerie',
@@ -407,18 +397,18 @@ export function WhyUsBento({ onNavigate }) {
     {
       id: 3,
       image: '/assets/workshop-meeting.jpg',
-      alt: 'Accompagnement terrain et travail collaboratif - Laurent Manouaba',
+      alt: 'Accompagnement terrain et travail collaboratif',
       title: "Suivi intégral : de l'élaboration à la réalisation opérationnelle",
       badge: {
         label: 'Immersion Terrain',
         value: '100% Présence Directe'
       },
       paragraphs: [
-        "Pas de sous-traitance opaque ni de consultants débutants délégués à votre dossier. Laurent Manouaba s'engage personnellement sur le terrain, assurant une présence continue aux côtés de vos équipes techniques et managériales.",
+        "Pas de sous-traitance opaque ni de consultants débutants délégués à votre dossier. Notre direction s'engage personnellement sur le terrain, assurant une présence continue aux côtés de vos équipes techniques et managériales.",
         "De la première note d'intention jusqu'au déploiement effectif, chaque étape fait l'objet d'un transfert de compétences rigoureux. Votre organisation ne développe aucune dépendance envers le cabinet : vos collaborateurs gagnent en maîtrise et en autonomie pérenne."
       ],
       bullets: [
-        "Implication directe de Laurent Manouaba à chaque étape clé",
+        "Implication directe de notre direction à chaque étape clé",
         "Cohésion renforcée et autonomisation complète de vos équipes internes",
         "Orchestration agile d'un réseau international de 67+ experts pointus"
       ],
@@ -427,14 +417,14 @@ export function WhyUsBento({ onNavigate }) {
     {
       id: 4,
       image: '/assets/eustress-team.jpg',
-      alt: "Adhésion d'équipe et eustress positif - Laurent Manouaba",
+      alt: "Adhésion d'équipe et eustress positif",
       title: "L’Eustress face au changement : convertir l'anxiété en énergie motrice",
       badge: {
         label: 'Adhésion Équipe',
         value: 'Victoires dès J+14'
       },
       paragraphs: [
-        "La peur de l'obsolescence et la surcharge mentale font échouer plus de 70% des projets technologiques d'envergure. Laurent Manouaba canalise cette appréhension en « stress positif » (eustress), en fixant des jalons courts, clairs et immédiatement gratifiants.",
+        "La peur de l'obsolescence et la surcharge mentale font échouer plus de 70% des projets technologiques d'envergure. Notre méthodologie canalise cette appréhension en « stress positif » (eustress), en fixant des jalons courts, clairs et immédiatement gratifiants.",
         "En célébrant des victoires opérationnelles tangibles dès les 14 premiers jours, la résistance au changement s'efface naturellement pour laisser place à la curiosité, à l'enthousiasme et à la fierté collective de réussir ensemble."
       ],
       bullets: [
@@ -444,9 +434,219 @@ export function WhyUsBento({ onNavigate }) {
       ],
       isReverse: true,
       hasCta: true,
+      ctaText: "Découvrir notre philosophie d'accompagnement",
       isLast: true
     }
-  ];
+  ],
+  en: [
+    {
+      id: 1,
+      image: '/assets/tech-prospective.jpg',
+      alt: 'Technological foresight and algorithmic intelligence',
+      title: 'Continuous Tech Intelligence & Scientific Foresight',
+      badge: {
+        label: 'R&D Foresight',
+        value: '+24 to 36 months ahead'
+      },
+      paragraphs: [
+        "We do not wait for a technology to become a fleeting social media trend before evaluating its economic impact. Our firm maintains ongoing applied research into foundation AI models, distributed architectures, IoT networks, and quantum shifts.",
+        "Our clients anticipate ecosystem disruptions 24 to 36 months ahead, seizing high-value innovations ahead of competitors while avoiding premature, unviable capital expenditure."
+      ],
+      bullets: [
+        "Continuous anticipation of market turning points (+24 to 36 months ahead)",
+        "Zero dependency on transient fads or cosmetic gadgets",
+        "Mastery of international standards (Cloud, Generative AI, data sovereignty)"
+      ],
+      isReverse: false
+    },
+    {
+      id: 2,
+      image: '/assets/strategic-audit.jpg',
+      alt: 'Strategic audit and financial rationalization',
+      title: 'Uncompromising Audit & Technology Budget Rationalization',
+      badge: {
+        label: 'Cash Flow Impact',
+        value: '-35% to -58% overhead'
+      },
+      paragraphs: [
+        "Every dollar allocated to your tech stack must generate a measurable operational multiple. We conduct a rigorous forensic review to eliminate redundancies, dormant software licenses, and over-engineered architectures.",
+        "Our intervention consistently reduces unnecessary recurring IT spend by 35% to 58%, releasing substantial cash flow to fund high-impact initiatives with rapid operational payback."
+      ],
+      bullets: [
+        "Proven 35% to 58% reduction in wasteful software & infrastructure spend",
+        "Rigorous renegotiation of software contracts and vendor subscriptions",
+        "Strict alignment of all technology investments with net operating margins"
+      ],
+      isReverse: true
+    },
+    {
+      id: 3,
+      image: '/assets/workshop-meeting.jpg',
+      alt: 'Hands-on field engagement and executive workshops',
+      title: 'End-to-End Execution: From Strategic Concept to Field Reality',
+      badge: {
+        label: 'Field Immersion',
+        value: '100% Direct Leadership'
+      },
+      paragraphs: [
+        "No opaque subcontracting or junior analysts assigned to your mandate. Our senior leadership personally engages on-site, providing continuous executive guidance alongside your technical teams.",
+        "From initial problem definition to final system rollout, every phase includes structured knowledge transfer. Your firm develops no unhealthy agency dependency: your in-house teams gain lasting autonomy."
+      ],
+      bullets: [
+        "Direct senior executive involvement at every milestone",
+        "Strengthened team cohesion and permanent internal capacity building",
+        "Agile orchestration of a global network of 67+ specialized PhDs & engineers"
+      ],
+      isReverse: false
+    },
+    {
+      id: 4,
+      image: '/assets/eustress-team.jpg',
+      alt: 'Team buy-in and organizational eustress',
+      title: 'Managing Eustress: Turning Fear of Change into High Performance',
+      badge: {
+        label: 'Team Buy-in',
+        value: 'Wins within Day 14'
+      },
+      paragraphs: [
+        "Fear of obsolescence and cognitive overload cause more than 70% of major technology initiatives to fail. Our methodology harnesses this tension into positive stress ('eustress') with clear, rapid, and rewarding milestones.",
+        "By celebrating tangible operational wins within the first 14 days, friction and resistance dissolve into curiosity, shared momentum, and collective pride in execution."
+      ],
+      bullets: [
+        "Immediate defusing of technological anxiety and fear of the unknown",
+        "Concrete operational victories at Day 14 to earn organic team buy-in",
+        "Empathetic organizational psychology delivered completely free of technical jargon"
+      ],
+      isReverse: true,
+      hasCta: true,
+      ctaText: "Discover our advisory philosophy",
+      isLast: true
+    }
+  ],
+  pt: [
+    {
+      id: 1,
+      image: '/assets/tech-prospective.jpg',
+      alt: 'Tendências tecnológicas e inteligência algorítmica',
+      title: 'Monitoramento Contínuo & Tendências Científicas',
+      badge: {
+        label: 'Visão de P&D',
+        value: '+24 a 36 meses de avanço'
+      },
+      paragraphs: [
+        "Não esperamos que uma tecnologia se torne moda passageira para avaliar seu impacto real. Nossa consultoria conduz pesquisa aplicada contínua em modelos de IA, sistemas distribuídos, IoT e computação quântica.",
+        "Nossos clientes antecipam rupturas de mercado com 24 a 36 meses de vantagem, adotando soluções de alto valor antes dos concorrentes e evitando gastos precipitados sem sustentabilidade."
+      ],
+      bullets: [
+        "Antecipação contínua de mudanças de mercado (+24 a 36 meses de vantagem)",
+        "Zero dependência de modismos e ferramentas cosméticas",
+        "Domínio das melhores práticas mundiais (Nuvem, IA generativa, soberania de dados)"
+      ],
+      isReverse: false
+    },
+    {
+      id: 2,
+      image: '/assets/strategic-audit.jpg',
+      alt: 'Auditoria estratégica e racionalização de custos',
+      title: 'Auditoria Imparcial & Otimização de Custos de TI',
+      badge: {
+        label: 'Impacto em Caixa',
+        value: '-35% a -58% em despesas'
+      },
+      paragraphs: [
+        "Cada centavo investido na sua tecnologia precisa justificar retorno claro. Realizamos uma análise rigorosa das suas despesas para eliminar redundâncias, licenças ociosas e servidores superdimensionados.",
+        "Nossa atuação reduz com frequência entre 35% e 58% dos custos recorrentes de TI, liberando caixa imediato para reinvestir em projetos prioritários de alta lucratividade operacional."
+      ],
+      bullets: [
+        "Redução comprovada de 35% a 58% em gastos desnecessários de software",
+        "Reavaliação minuciosa de cada contrato de tecnologia e assinatura",
+        "Alinhamento direto dos custos com as margens operacionais do negócio"
+      ],
+      isReverse: true
+    },
+    {
+      id: 3,
+      image: '/assets/workshop-meeting.jpg',
+      alt: 'Acompanhamento prático e oficinas de trabalho',
+      title: 'Acompanhamento Integral: Do Planejamento à Execução Real',
+      badge: {
+        label: 'Imersão em Campo',
+        value: '100% Presença Direta'
+      },
+      paragraphs: [
+        "Sem terceirizações opacas ou consultores iniciantes no seu projeto. Nossa liderança atua diretamente ao lado dos seus gestores e equipes técnicas.",
+        "Do diagnóstico inicial à implantação completa, cada etapa inclui transferência rigorosa de conhecimento. Sua empresa não cria dependência: seus colaboradores ganham autonomia sólida e permanente."
+      ],
+      bullets: [
+        "Envolvimento direto de liderança experiente em cada marco do projeto",
+        "Maior coesão e capacitação definitiva da sua equipe interna",
+        "Orquestração ágil de uma rede internacional de mais de 67 especialistas de ponta"
+      ],
+      isReverse: false
+    },
+    {
+      id: 4,
+      image: '/assets/eustress-team.jpg',
+      alt: 'Engajamento de equipe e eustress positivo',
+      title: 'Eustress na Transformação: Converter Ansiedade em Energia Construtiva',
+      badge: {
+        label: 'Adesão da Equipe',
+        value: 'Conquistas em 14 dias'
+      },
+      paragraphs: [
+        "O receio da obsolescência e a sobrecarga mental causam o fracasso de mais de 70% dos grandes projetos de tecnologia. Nossa metodologia canaliza esse estresse em energia positiva (eustress), criando metas curtas e gratificantes.",
+        "Ao comemorar vitórias operacionais claras logo nas primeiras duas semanas, a resistência ao novo dá lugar à curiosidade, à motivação e ao orgulho coletivo de evoluir juntos."
+      ],
+      bullets: [
+        "Superação imediata do medo do desconhecido e da insegurança técnica",
+        "Resultados práticos em até 14 dias para conquistar a confiança dos times",
+        "Acompanhamento comportamental e organizacional sem termos herméticos"
+      ],
+      isReverse: true,
+      hasCta: true,
+      ctaText: "Conheça nossa metodologia de atuação",
+      isLast: true
+    }
+  ]
+};
+
+export function WhyUsBento({ onNavigate }) {
+  const { lang, t } = useLanguage();
+  const headerRef = useRef(null);
+  const headerProgress = useRowScrollProgress(headerRef);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const stories = STORIES_BY_LANG[lang] || STORIES_BY_LANG.fr;
+
+  const headerContent = {
+    fr: {
+      pre: "Pourquoi confier votre ",
+      highlight: "transformation technologique",
+      post: " au cabinet",
+      desc: "Fini les rapports théoriques inapplicables. Notre cabinet allie rigueur prospective, rationalisation budgétaire intransigeante et présence humaine directe sur le terrain pour rentabiliser immédiatement chaque levier technologique."
+    },
+    en: {
+      pre: "Why entrust your ",
+      highlight: "technology transformation",
+      post: " to our firm",
+      desc: "No more abstract, shelf-sitting consulting reports. Our firm blends deep technological foresight, rigorous budget optimization, and direct hands-on leadership to generate immediate operational profitability."
+    },
+    pt: {
+      pre: "Por que confiar a sua ",
+      highlight: "transformação tecnológica",
+      post: " à nossa consultoria",
+      desc: "Chega de relatórios teóricos impraticáveis. Nossa consultoria une visão de futuro, rigorosa economia orçamentária e presença prática em campo para rentabilizar imediatamente cada alavanca de inovação."
+    }
+  };
+
+  const h = headerContent[lang] || headerContent.fr;
 
   return (
     <section
@@ -495,7 +695,7 @@ export function WhyUsBento({ onNavigate }) {
                 textAlign: 'center'
               }}
             >
-              Pourquoi confier votre <span style={{ color: '#0d9488' }}>transformation technologique</span> au cabinet
+              {h.pre}<span style={{ color: '#0d9488' }}>{h.highlight}</span>{h.post}
             </h2>
           </div>
 
@@ -533,7 +733,7 @@ export function WhyUsBento({ onNavigate }) {
                 textAlign: 'center'
               }}
             >
-              Fini les rapports théoriques inapplicables. Le cabinet de Laurent G-M Manouaba allie rigueur prospective, rationalisation budgétaire intransigeante et présence humaine directe sur le terrain pour rentabiliser immédiatement chaque levier technologique.
+              {h.desc}
             </p>
           </div>
         </div>

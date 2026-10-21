@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Layers, ChevronDown, ChevronUp, MessageSquare, CheckCircle, Sparkles, ArrowRight } from 'lucide-react';
-import { SERVICES, PILLARS } from '../data/content';
+import { Layers, ChevronDown, ChevronUp, MessageSquare, CheckCircle, Sparkles, ArrowRight, CreditCard, Lock } from 'lucide-react';
+import { getStripeConfig } from '../utils/stripeConfig';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function ServicesExplorer({ onOpenBooking }) {
+  const { services, pillars, t } = useLanguage();
+  const stripeConfig = getStripeConfig();
   const [activePillar, setActivePillar] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
 
   const filteredServices = activePillar === 'all'
-    ? SERVICES
-    : SERVICES.filter((s) => s.pillar === activePillar);
+    ? services
+    : services.filter((s) => s.pillar === activePillar);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -20,11 +23,10 @@ export function ServicesExplorer({ onOpenBooking }) {
         {/* Section Heading */}
         <div className="section-center reveal-on-scroll">
           <h2 className="section-title">
-            12 Domaines d’Intervention Technologique de Pointe
+            {t('servicesExplorer.title')}
           </h2>
           <p className="section-subtitle">
-            Une architecture modulaire pensée pour réduire la complexité technique et accélérer votre rentabilité opérationnelle.
-            Choisissez un domaine pour explorer les livrables précis.
+            {t('servicesExplorer.subtitle')}
           </p>
         </div>
 
@@ -39,7 +41,7 @@ export function ServicesExplorer({ onOpenBooking }) {
             marginBottom: '40px'
           }}
         >
-          {PILLARS.map((p) => {
+          {pillars.map((p) => {
             const isActive = activePillar === p.id;
             return (
               <button
@@ -181,12 +183,18 @@ export function ServicesExplorer({ onOpenBooking }) {
                     </button>
 
                     <button
-                      onClick={() => onOpenBooking(`Intérêt pour le service N°${service.id} : ${service.title}`)}
+                      onClick={() => onOpenBooking(`Service N°${service.id} : ${service.title}`)}
                       className="btn btn-whatsapp btn-sm"
-                      title="Échanger directement avec Laurent Manouaba sur ce service"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        whiteSpace: 'nowrap'
+                      }}
+                      title="Prendre rendez-vous avec notre cabinet"
                     >
                       <MessageSquare size={14} />
-                      <span>Échanger</span>
+                      <span>Prendre Rendez-vous</span>
                     </button>
                   </div>
                 </div>

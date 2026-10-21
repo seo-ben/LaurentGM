@@ -1,15 +1,15 @@
-// Données exhaustives issues de la synthèse officielle du cabinet Laurent G-M Manouaba
+// Données exhaustives issues de la synthèse officielle du cabinet LGM Consulting & Innovations
 // Structurées selon les principes de psychologie décisionnelle et de clarté cognitive
 
 export const CONTACT_INFO = {
-  name: "Laurent G-M Manouaba",
+  name: "LGM Consulting & Innovations",
   title: "Consultant en Innovations Technologiques & Stratégie Opérationnelle",
   tagline: "« La technologie révolutionnaire à la portée de tous »",
   phoneDisplay: "+228 90 44 55 71 / 98 19 17 70",
   whatsappNumber: "22890445571", // Format international sans '+' pour wa.me
   whatsappSecondary: "22898191770",
   email: "Contact@laurentmanouaba.pro",
-  address: "Agoé-Zongo, Rue Principale, Lomé (Togo) — BP 19BP439",
+  address: "AGOE-ZONGO, Rue, LOME; 19BP439, Lomé-TOGO",
   calendly: "https://calendly.com/laurentmanouaba/prise-de-rendez-vous",
   socials: {
     whatsapp: "https://wa.me/22890445571",
@@ -159,9 +159,9 @@ export const SERVICES = [
 export const SECTORS = [
   { name: "Santé & Biomédical", icon: "Activity", detail: "Télémédecine, dispositifs connectés, sécurisation des dossiers patients" },
   { name: "Banque & Finance", icon: "CreditCard", detail: "Cryptographie, détection de fraude, smart contracts et scoring IA" },
-  { name: "BTP & Construction", icon: "Building", detail: "BIM augmenté, jumeaux numériques, capteurs structurels IoT" },
+  { name: "Agrobusiness", icon: "Sprout", detail: "Agritech, traçabilité des filières agricoles, capteurs connectés et optimisation des rendements" },
   { name: "Transport & Logistique", icon: "Truck", detail: "Optimisation de tournées, traçabilité temps réel et maintenance prédictive" },
-  { name: "Aéronautique & Défense", icon: "Shield", detail: "Simulation poussée, systèmes embarqués et robustesse extrême" },
+  { name: "Eduformation", icon: "GraduationCap", detail: "EdTech, plateformes LMS immersives, digitalisation des compétences et formation continue augmentée" },
   { name: "Commerce & Industrie", icon: "ShoppingBag", detail: "Automatisation de la chaîne d'approvisionnement et supply-chain agile" }
 ];
 
@@ -178,12 +178,12 @@ export const ANNUAL_PLANS = [
       "Évaluation approfondie de votre socle de compétences",
       "Définition d'une stratégie de carrière technologique claire",
       "Suivi trimestriel de vos projets d'innovation personnels",
-      "Mise en relation avec le réseau d'experts de Laurent Manouaba",
+      "Mise en relation avec le réseau d'experts",
       "Assistance à la budgétisation et recherche d'opportunités",
       "Échanges directs réguliers et visio"
     ],
     ctaText: "Sélectionner le Suivi Individu (100 $/an)",
-    whatsappPayload: "Bonjour Laurent, je souhaite souscrire au 'Suivi Physique Individu (100 $/an)'. Pouvons-nous valider les prochaines étapes ?"
+    whatsappPayload: "Bonjour, je souhaite souscrire au 'Suivi Physique Individu (100 $/an)'. Pouvons-nous valider les prochaines étapes ?"
   },
   {
     id: "annuel-startup",
@@ -202,7 +202,7 @@ export const ANNUAL_PLANS = [
       "Ligne d'assistance prioritaire pour vos arbitrages techniques"
     ],
     ctaText: "Sélectionner le Suivi Petite Entreprise (200 $/an)",
-    whatsappPayload: "Bonjour Laurent, je souhaite inscrire mon entreprise de 5 personnes ou moins à votre 'Suivi Moral (200 $/an)'. Discutons de notre projet."
+    whatsappPayload: "Bonjour, je souhaite inscrire mon entreprise de 5 personnes ou moins à votre 'Suivi Moral (200 $/an)'. Discutons de notre projet."
   },
   {
     id: "annuel-pme",
@@ -222,7 +222,7 @@ export const ANNUAL_PLANS = [
       "Accompagnement psychologique du changement (gestion de l'eustress)"
     ],
     ctaText: "Activer le Suivi PME Recommandé (600 $/an)",
-    whatsappPayload: "Bonjour Laurent, nous souhaitons engager notre PME (5 à 15 collaborateurs) sur votre formule 'Suivi Moral PME (600 $/an)'. Quels sont vos créneaux pour le cadrage ?"
+    whatsappPayload: "Bonjour, nous souhaitons engager notre PME (5 à 15 collaborateurs) sur votre formule 'Suivi Moral PME (600 $/an)'. Quels sont vos créneaux pour le cadrage ?"
   }
 ];
 
@@ -244,7 +244,7 @@ export const SPOT_PLANS = [
       "Recommandation des axes prioritaires et estimation budgétaire"
     ],
     ctaText: "Réserver la Consultance Basic (90 $)",
-    whatsappPayload: "Bonjour Laurent, je souhaite réserver la formule 'Consultance Basic (90 $)'. Mon projet est en phase d'idée/cadrage. Quand pouvons-nous planifier l'appel ?"
+    whatsappPayload: "Bonjour, je souhaite réserver la formule 'Consultance Basic (90 $)'. Mon projet est en phase d'idée/cadrage. Quand pouvons-nous planifier l'appel ?"
   },
   {
     id: "consult-business",
@@ -264,7 +264,7 @@ export const SPOT_PLANS = [
       "Rapport exécutif prêt pour présentation au conseil ou investisseurs"
     ],
     ctaText: "Activer la Consultance Business (490 $)",
-    whatsappPayload: "Bonjour Laurent, je souhaite activer le pack 'Consultance Business (490 $)' pour notre structure. Pouvons-nous convenir d'un premier point ?"
+    whatsappPayload: "Bonjour, je souhaite activer le pack 'Consultance Business (490 $)' pour notre structure. Pouvons-nous convenir d'un premier point ?"
   },
   {
     id: "consult-premium",
@@ -284,7 +284,7 @@ export const SPOT_PLANS = [
       "Planification financière complète et gestion des risques"
     ],
     ctaText: "Solliciter la Consultance Premium (2 000 $)",
-    whatsappPayload: "Bonjour Laurent, je représente une entreprise internationale / projet d'envergure et souhaite solliciter votre pack 'Consultance Premium (2 000 $)'. Quel est votre calendrier de démarrage ?"
+    whatsappPayload: "Bonjour, je représente une entreprise internationale / projet d'envergure et souhaite solliciter votre pack 'Consultance Premium (2 000 $)'. Quel est votre calendrier de démarrage ?"
   }
 ];
 
@@ -321,15 +321,15 @@ export const ARTICLES = [
 export const FAQ_ITEMS = [
   {
     q: "Comment se déroule la prise de rendez-vous et le premier contact ?",
-    a: "L'appel téléphonique de découverte initiale (30 minutes) est totalement gratuit et sans engagement. Vous pouvez le réserver immédiatement via le formulaire de cette page, qui génère directement votre message pré-rempli pour Laurent Manouaba. Vous recevez une réponse sous quelques heures pour convenir du créneau idéal."
+    a: "La réservation d'une session de cadrage stratégique (consultation payante) s'effectue directement via notre module en ligne. Vous sélectionnez votre domaine d'intervention et créneau souhaité, puis finalisez la réservation avec confirmation immédiate et règlement sécurisé en ligne."
   },
   {
     q: "Pourquoi privilégier la messagerie directe plutôt que par e-mail ?",
-    a: "La sociologie de la décision nous montre que les échanges par e-mail subissent des délais de friction inutiles (boîtes spams, formalisme excessif). La messagerie instantanée garantit un contact humain immédiat, direct avec Laurent Manouaba, permettant de partager rapidement vos documents préparatoires ou messages vocaux de cadrage."
+    a: "La sociologie de la décision nous montre que les échanges par e-mail subissent des délais de friction inutiles (boîtes spams, formalisme excessif). La messagerie instantanée garantit un contact humain immédiat, direct avec le cabinet, permettant de partager rapidement vos documents préparatoires ou messages vocaux de cadrage."
   },
   {
-    q: "Qu'est-ce qui différencie Laurent Manouaba d'un cabinet de conseil classique ?",
-    a: "Une approche 'locale dans une démarche globale' sans jargon théorique : Laurent combine une formation d'ingénierie technique (électricité, génie des procédés, data, électronique) avec une culture du terrain et de la rentabilité. Il ne produit pas des rapports de 200 pages destinés à un tiroir, mais des schémas directeurs concrets et immédiatement applicables."
+    q: "Qu'est-ce qui différencie votre cabinet d'un cabinet de conseil classique ?",
+    a: "Une approche 'locale dans une démarche globale' sans jargon théorique : notre cabinet combine une formation d'ingénierie technique (électricité, génie des procédés, data, électronique) avec une culture du terrain et de la rentabilité. Nous ne produisons pas des rapports de 200 pages destinés à un tiroir, mais des schémas directeurs concrets et immédiatement applicables."
   },
   {
     q: "Vos missions s'effectuent-elles à distance ou en présentiel ?",
@@ -337,7 +337,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Comment garantissez-vous la confidentialité de nos données stratégiques ?",
-    a: "La confidentialité et l'éthique font partie des 5 piliers cardinaux de Laurent Manouaba (conformité stricte aux standards RGPD, accords de non-divulgation NDA systématiques avant toute consultation approfondie, et isolation hermétique des données clients)."
+    a: "La confidentialité et l'éthique font partie des 5 piliers cardinaux du cabinet (conformité stricte aux standards RGPD, accords de non-divulgation NDA systématiques avant toute consultation approfondie, et isolation hermétique des données clients)."
   }
 ];
 
@@ -388,11 +388,11 @@ export const REALISATIONS = [
   },
   {
     id: "realisation-4",
-    title: "Laurent G-M Manouaba en Session de Recherche & Modélisation R&D",
+    title: "Session de Recherche & Modélisation R&D Approfondie",
     category: "rd-tech",
     categoryLabel: "R&D & Deep Tech",
     image: "/assets/realisations/realisation-4.jpg",
-    location: "Cabinet Laurent Manouaba",
+    location: "Laboratoire R&D LGM Consulting",
     date: "2024",
     client: "Études Stratégiques Internes",
     shortDesc: "Immersion analytique, revue d'architectures logicielles et modélisation de solutions algorithmiques sur-mesure.",

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, MessageSquare, ZoomIn } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function RealisationModal({
   item,
@@ -10,6 +11,8 @@ export function RealisationModal({
   onSelectPrev,
   onOpenBooking
 }) {
+  const { lang } = useLanguage();
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -33,6 +36,36 @@ export function RealisationModal({
 
   const currentIndex = items.findIndex((i) => i.id === item.id || i.image === item.image);
   const totalCount = items.length;
+
+  const modalTexts = {
+    fr: {
+      prev: "Photo précédente",
+      next: "Photo suivante",
+      close: "Fermer",
+      discuss: "Échanger avec nos experts sur ce projet",
+      projectPrefix: "Projet Réalisations"
+    },
+    en: {
+      prev: "Previous photo",
+      next: "Next photo",
+      close: "Close",
+      discuss: "Discuss this project with our experts",
+      projectPrefix: "Case Study Project"
+    },
+    pt: {
+      prev: "Foto anterior",
+      next: "Próxima foto",
+      close: "Fechar",
+      discuss: "Conversar com nossos especialistas sobre este projeto",
+      projectPrefix: "Projeto Realizado"
+    }
+  }[lang] || {
+    prev: "Photo précédente",
+    next: "Photo suivante",
+    close: "Fermer",
+    discuss: "Échanger avec nos experts sur ce projet",
+    projectPrefix: "Projet Réalisations"
+  };
 
   return (
     <div
@@ -97,7 +130,7 @@ export function RealisationModal({
               <button
                 type="button"
                 onClick={onSelectPrev}
-                aria-label="Photo précédente"
+                aria-label={modalTexts.prev}
                 style={{
                   width: '38px',
                   height: '38px',
@@ -120,7 +153,7 @@ export function RealisationModal({
               <button
                 type="button"
                 onClick={onSelectNext}
-                aria-label="Photo suivante"
+                aria-label={modalTexts.next}
                 style={{
                   width: '38px',
                   height: '38px',
@@ -145,7 +178,7 @@ export function RealisationModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label={modalTexts.close}
             style={{
               width: '38px',
               height: '38px',
@@ -196,7 +229,7 @@ export function RealisationModal({
         />
       </div>
 
-      {/* Bottom CTA bar */}
+      {/* Floating Action Button below photo */}
       <div
         style={{
           marginTop: '16px',
@@ -212,7 +245,7 @@ export function RealisationModal({
             onClose();
             if (onOpenBooking) {
               onOpenBooking({
-                subject: `Projet Réalisations : ${item.title || 'Devis Travaux & Ingénierie'}`
+                subject: `${modalTexts.projectPrefix} : ${item.title || 'Audit & Mandat'}`
               });
             }
           }}
@@ -229,7 +262,7 @@ export function RealisationModal({
           }}
         >
           <MessageSquare size={17} />
-          <span>Échanger avec Laurent sur ce projet</span>
+          <span>{modalTexts.discuss}</span>
         </button>
       </div>
 

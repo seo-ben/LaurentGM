@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Tag, Check, Star, ShieldCheck, MessageSquare, Info, Clock, ArrowRight } from 'lucide-react';
-import { ANNUAL_PLANS, SPOT_PLANS } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function PricingSection({ onOpenBooking }) {
+  const { annualPlans, spotPlans, t } = useLanguage();
   const [billingTab, setBillingTab] = useState('annual'); // 'annual' or 'spot'
 
   return (
@@ -11,11 +12,10 @@ export function PricingSection({ onOpenBooking }) {
         {/* Section Header */}
         <div className="section-center reveal-on-scroll">
           <h2 className="section-title">
-            Investissez dans des Formules à Fort Rendement
+            {t('pricingSection.title')}
           </h2>
           <p className="section-subtitle">
-            Un appel téléphonique de découverte est systématiquement offert.
-            Choisissez entre un accompagnement annuel continu ou une mission ponctuelle d’intervention ciblée.
+            {t('pricingSection.subtitle')}
           </p>
 
           {/* Toggle between Annual Mentoring & Spot Consulting */}
@@ -45,7 +45,7 @@ export function PricingSection({ onOpenBooking }) {
                 boxShadow: billingTab === 'annual' ? 'var(--shadow-sm)' : 'none'
               }}
             >
-              Suivi Entrepreneurial Annuel (3 Formules)
+              {t('pricingSection.annualTab')}
             </button>
             <button
               onClick={() => setBillingTab('spot')}
@@ -63,14 +63,14 @@ export function PricingSection({ onOpenBooking }) {
                 boxShadow: billingTab === 'spot' ? 'var(--shadow-sm)' : 'none'
               }}
             >
-              Consultance Ponctuelle (3 Packs)
+              {t('pricingSection.spotTab')}
             </button>
           </div>
         </div>
 
         {/* Pricing Cards Grid */}
         <div className="grid-3" style={{ marginBottom: '56px' }}>
-          {(billingTab === 'annual' ? ANNUAL_PLANS : SPOT_PLANS).map((plan) => {
+          {(billingTab === 'annual' ? annualPlans : spotPlans).map((plan) => {
             return (
               <div
                 key={plan.id}
@@ -207,7 +207,7 @@ export function PricingSection({ onOpenBooking }) {
                     <span>{plan.ctaText}</span>
                   </button>
                   <p style={{ textAlign: 'center', fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '8px' }}>
-                    Entretien initial offert • Sans engagement
+                    Prise de rendez-vous & consultation payantes • Stripe
                   </p>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DESIGN SYSTEM - SITE PROFESSIONNEL MULTI-PAGES LAURENT G-M MANOUABA
+   DESIGN SYSTEM - SITE PROFESSIONNEL MULTI-PAGES LGM CONSULTING & INNOVATIONS
    Aesthetics: Fond blanc pointillé, Typographie premium, Zéro label au-dessus des titres
    ========================================================================== */
 
@@ -59,6 +59,9 @@ html {
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
 }
 
 body {
@@ -67,6 +70,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
   position: relative;
   /* Fond blanc pointillé */
   background-image: radial-gradient(rgba(15, 23, 42, 0.12) 1.25px, transparent 1.25px);
@@ -105,10 +110,17 @@ img {
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
+}
+
+.app-wrapper {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
 }
 
 /* Page Headers - Clean and bold without any labels */
@@ -191,7 +203,23 @@ img {
   text-align: center;
   line-height: 1.3;
   user-select: none;
-  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    white-space: normal;
+    word-break: break-word;
+  }
+  .btn-lg {
+    padding: 12px 18px !important;
+    font-size: 0.92rem !important;
+  }
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 .btn:active {

@@ -1,14 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { ArrowRight, Maximize2 } from 'lucide-react';
 import { getStoredRealisations } from '../utils/slidesStorage';
 import { RealisationModal } from './RealisationModal';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function RealisationsSection({ onNavigate, onOpenBooking }) {
+  const { realisations, t } = useLanguage();
   const [items, setItems] = useState(() => getStoredRealisations());
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+
+  // Fusion dynamique des images stockées avec les textes traduits
+  const localizedItems = useMemo(() => {
+    return items.map((item) => {
+      const trans = realisations.find((r) => r.id === item.id);
+      return trans ? { ...item, ...trans, image: item.image || trans.image } : item;
+    });
+  }, [items, realisations]);
 
   // Écoute les modifications de la galerie depuis l'Espace Admin
   useEffect(() => {
@@ -59,28 +69,28 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
   };
 
   const handleNextItem = () => {
-    if (!selectedItem || !items.length) return;
-    const currentIndex = items.findIndex((i) => i.id === selectedItem.id);
-    const nextIndex = (currentIndex + 1) % items.length;
-    setSelectedItem(items[nextIndex]);
+    if (!selectedItem || !localizedItems.length) return;
+    const currentIndex = localizedItems.findIndex((i) => i.id === selectedItem.id);
+    const nextIndex = (currentIndex + 1) % localizedItems.length;
+    setSelectedItem(localizedItems[nextIndex]);
   };
 
   const handlePrevItem = () => {
-    if (!selectedItem || !items.length) return;
-    const currentIndex = items.findIndex((i) => i.id === selectedItem.id);
-    const prevIndex = (currentIndex - 1 + items.length) % items.length;
-    setSelectedItem(items[prevIndex]);
+    if (!selectedItem || !localizedItems.length) return;
+    const currentIndex = localizedItems.findIndex((i) => i.id === selectedItem.id);
+    const prevIndex = (currentIndex - 1 + localizedItems.length) % localizedItems.length;
+    setSelectedItem(localizedItems[prevIndex]);
   };
 
   // Find images by id or fallback to item index
-  const img1 = items.find((r) => r.id === 'realisation-1') || items[0] || {};
-  const img2 = items.find((r) => r.id === 'realisation-2') || items[1] || items[0] || {};
-  const img3 = items.find((r) => r.id === 'realisation-3') || items[2] || items[0] || {};
-  const img4 = items.find((r) => r.id === 'realisation-4') || items[3] || items[0] || {};
-  const img5 = items.find((r) => r.id === 'realisation-5') || items[4] || items[0] || {};
-  const img6 = items.find((r) => r.id === 'realisation-6') || items[5] || items[0] || {};
-  const img7 = items.find((r) => r.id === 'realisation-7') || items[6] || items[0] || {};
-  const img8 = items.find((r) => r.id === 'realisation-8') || items[7] || items[0] || {};
+  const img1 = localizedItems.find((r) => r.id === 'realisation-1') || localizedItems[0] || {};
+  const img2 = localizedItems.find((r) => r.id === 'realisation-2') || localizedItems[1] || localizedItems[0] || {};
+  const img3 = localizedItems.find((r) => r.id === 'realisation-3') || localizedItems[2] || localizedItems[0] || {};
+  const img4 = localizedItems.find((r) => r.id === 'realisation-4') || localizedItems[3] || localizedItems[0] || {};
+  const img5 = localizedItems.find((r) => r.id === 'realisation-5') || localizedItems[4] || localizedItems[0] || {};
+  const img6 = localizedItems.find((r) => r.id === 'realisation-6') || localizedItems[5] || localizedItems[0] || {};
+  const img7 = localizedItems.find((r) => r.id === 'realisation-7') || localizedItems[6] || localizedItems[0] || {};
+  const img8 = localizedItems.find((r) => r.id === 'realisation-8') || localizedItems[7] || localizedItems[0] || {};
 
   return (
     <section
@@ -94,7 +104,7 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
       }}
     >
       <div className="container" style={{ maxWidth: '1240px' }}>
-        {/* Section Header (Pure direct title without labels above, fluid entrance) */}
+        {/* Section Header */}
         <div
           className={`realisations-header-block ${isVisible ? 'is-in-view' : ''}`}
           style={{
@@ -113,7 +123,7 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
               marginBottom: '16px'
             }}
           >
-            Galerie & Réalisations sur le Terrain
+            {t('realisationsSection.title')}
           </h2>
           <p
             style={{
@@ -124,7 +134,7 @@ export function RealisationsSection({ onNavigate, onOpenBooking }) {
               margin: '0 auto'
             }}
           >
-            Découvrez en photographies nos interventions de conseil, ateliers exécutifs d'IA, audits stratégiques et projets R&D sur le terrain.
+            {t('realisationsSection.subtitle')}
           </p>
         </div>
 

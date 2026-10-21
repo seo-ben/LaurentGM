@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
 import { getStoredSlides } from '../utils/slidesStorage';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function Hero({ onNavigate, onOpenBooking }) {
-  // Photos de Laurent Manouaba en slider (dynamique via stockage / admin)
+  const { lang, t } = useLanguage();
+
+  // Photos du cabinet LGM Consulting en slider (dynamique via stockage / admin)
   const [slides, setSlides] = useState(() => getStoredSlides());
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -109,26 +112,42 @@ export function Hero({ onNavigate, onOpenBooking }) {
         <div className="hero-grid">
           {/* Colonne Gauche : Titre Bicolore, Pitch Stratégique & Actions */}
           <div className="hero-text-col">
-            {/* STRICTEMENT SANS AUCUN LABEL AU-DESSUS DU TITRE (règle formelle) */}
+            {/* Titre multilingue avec accent turquoise */}
             <h1 className="hero-main-title">
-              Où l’<span className="hero-teal-accent">Innovation</span>
-              <br className="desktop-br" />
-              {' '}Rencontre la <span className="hero-teal-accent">Rentabilité.</span>
+              {lang === 'en' ? (
+                <>
+                  Where <span className="hero-teal-accent">Innovation</span>
+                  <br className="desktop-br" />
+                  {' '}Meets <span className="hero-teal-accent">Profitability.</span>
+                </>
+              ) : lang === 'pt' ? (
+                <>
+                  Onde a <span className="hero-teal-accent">Inovação</span>
+                  <br className="desktop-br" />
+                  {' '}Encontra a <span className="hero-teal-accent">Lucratividade.</span>
+                </>
+              ) : (
+                <>
+                  Où l’<span className="hero-teal-accent">Innovation</span>
+                  <br className="desktop-br" />
+                  {' '}Rencontre la <span className="hero-teal-accent">Rentabilité.</span>
+                </>
+              )}
             </h1>
 
             {/* Pitch stratégique concret sans jargon */}
             <p className="hero-pitch-text">
-              Fini les rapports théoriques inapplicables. <strong>Laurent G-M Manouaba</strong> transforme vos investissements en IA, data et technologies de rupture en rentabilité opérationnelle immédiate, sans jargon ni dépenses superflues.
+              {t('hero.pitch')}
             </p>
 
             {/* Deux boutons d'action */}
             <div className="hero-cta-wrapper">
               <button
-                onClick={() => onOpenBooking('Audit Stratégique Initial Offert')}
+                onClick={() => onOpenBooking('Consultation Stratégique (90 $)')}
                 className="hero-btn-primary"
               >
                 <Calendar size={18} />
-                <span>Prendre Rendez-vous</span>
+                <span>{t('hero.ctaBooking')}</span>
               </button>
 
               <button
@@ -138,7 +157,7 @@ export function Hero({ onNavigate, onOpenBooking }) {
                 }}
                 className="hero-btn-secondary"
               >
-                <span>Découvrir les 12 Services</span>
+                <span>{t('hero.ctaServices')}</span>
                 <ArrowRight size={17} />
               </button>
             </div>
@@ -153,8 +172,8 @@ export function Hero({ onNavigate, onOpenBooking }) {
               </div>
               <div className="reassurance-text">
                 <CheckCircle2 size={16} className="reassurance-check" />
-                <span className="reassurance-text-desktop">Audit initial offert (30 min) • Réponse sous 24h chrono • Lomé & International</span>
-                <span className="reassurance-text-mobile">Laurent G-M Manouaba</span>
+                <span className="reassurance-text-desktop">{t('hero.reassurance')}</span>
+                <span className="reassurance-text-mobile">LGM Consulting</span>
               </div>
             </div>
           </div>
@@ -204,7 +223,7 @@ export function Hero({ onNavigate, onOpenBooking }) {
 
                 {/* Voile sombre en bas du cercle pour la lisibilité du nom */}
                 <div className="circle-name-overlay">
-                  <div className="circle-author-name">Laurent G-M Manouaba</div>
+                  <div className="circle-author-name">LGM Consulting</div>
                   <div className="circle-author-role">
                     {activeSlide.role}
                   </div>

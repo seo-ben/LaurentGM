@@ -1,18 +1,73 @@
 import React from 'react';
 import { UserCheck, Shield, CheckCircle2, HeartHandshake, Eye, Award, ExternalLink } from 'lucide-react';
-import { CONTACT_INFO, SECTORS } from '../data/content';
+import { CONTACT_INFO } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function AboutSection({ onOpenBooking }) {
+  const { sectors, t, lang } = useLanguage();
+
+  const contentByLang = {
+    fr: {
+      title: "À Propos de notre Cabinet & Vision Technologique",
+      subtitle: "Une alliance rare entre rigueur scientifique, maîtrise technique pluridisciplinaire et engagement humain pour une technologie utile et accessible.",
+      quote: "« La technologie n’a de valeur que si elle libère le potentiel humain. »",
+      p1: "Passionné de recherche scientifique appliquée et de dynamique entrepreneuriale, notre cabinet intervient comme partenaire technologique indépendant, bureau d'études et conseiller de direction.",
+      p2: "Notre approche se distingue par une solide formation multidisciplinaire couvrant : l’informatique de pointe, l’électricité & l’électronique, le génie des procédés, les techniques d’analyse statistique et le management de l’innovation. Cette transversalité permet de dialoguer aussi bien avec des ingénieurs d'infrastructure qu'avec des directeurs financiers.",
+      values: [
+        { title: 'Plaisir & Passion', desc: 'L’enthousiasme de résoudre des verrous complexes.' },
+        { title: 'Excellence & Rigueur', desc: 'Zéro approximation sur la sécurité et le code.' },
+        { title: 'Collectif & Synergie', desc: 'Valorisation de l’intelligence d’équipe locale.' },
+        { title: 'Honnêteté & Transparence', desc: 'Parler vrai sur la rentabilité réelle des projets.' }
+      ],
+      ctaBtn: "Discuter de votre projet",
+      sectorsTitle: "Secteurs d’Activité & Domaines d’Impact",
+      sectorsSub: "Une adaptation prouvée aux contraintes réglementaires et opérationnelles de chaque industrie."
+    },
+    en: {
+      title: "About our Firm & Technology Vision",
+      subtitle: "A rare synergy of scientific rigor, multidisciplinary engineering, and human commitment for purposeful, accessible technology.",
+      quote: "“Technology is only valuable when it unleashes human potential.”",
+      p1: "Driven by applied scientific research and entrepreneurial dynamics, our firm serves as an independent technology partner, strategic R&D bureau, and board-level advisor.",
+      p2: "Our approach stands out through robust multidisciplinary foundations: advanced computer systems, electrical & electronics engineering, chemical process engineering, statistical data modeling, and innovation management. This versatility bridges technical infrastructure teams and executive financial leadership.",
+      values: [
+        { title: 'Passion & Drive', desc: 'Solving complex engineering bottlenecks with enthusiasm.' },
+        { title: 'Rigorous Excellence', desc: 'Zero compromise on architecture, security, and clean code.' },
+        { title: 'Collective Synergy', desc: 'Leveraging and empowering local in-house team talent.' },
+        { title: 'Honesty & Clarity', desc: 'Unvarnished truth on the actual financial ROI of projects.' }
+      ],
+      ctaBtn: "Discuss your project",
+      sectorsTitle: "Industry Sectors & Impact Domains",
+      sectorsSub: "Proven adaptability to regulatory and operational requirements across diverse industries."
+    },
+    pt: {
+      title: "Sobre a nossa Consultoria & Visão Tecnológica",
+      subtitle: "Uma aliança rara entre rigor científico, domínio técnico multidisciplinar e compromisso humano para uma tecnologia prática e acessível.",
+      quote: "“A tecnologia só tem valor quando liberta o potencial humano.”",
+      p1: "Movidos pela pesquisa científica aplicada e pelo dinamismo empreendedor, atuamos como parceiro tecnológico independente, centro de P&D e conselheiro estratégico da diretoria.",
+      p2: "Nossa metodologia se destaca pela sólida expertise multidisciplinar: computação de ponta, engenharia elétrica e eletrônica, engenharia de processos, análise estatística e gestão da inovação. Essa visão transversal cria uma ponte direta entre equipes de infraestrutura e a diretoria financeira.",
+      values: [
+        { title: 'Paixão & Propósito', desc: 'Entusiasmo em resolver gargalos técnicos complexos.' },
+        { title: 'Excelência com Rigor', desc: 'Zero tolerância para falhas de segurança e código.' },
+        { title: 'Sinergia & Equipe', desc: 'Valorização e capacitação da inteligência interna.' },
+        { title: 'Transparência Real', desc: 'Clareza absoluta sobre o retorno financeiro de cada projeto.' }
+      ],
+      ctaBtn: "Conversar sobre seu projeto",
+      sectorsTitle: "Setores de Atuação & Áreas de Impacto",
+      sectorsSub: "Adaptação comprovada às exigências regulatórias e operacionais de cada indústria."
+    }
+  };
+
+  const c = contentByLang[lang] || contentByLang.fr;
+
   return (
     <section id="apropos" style={{ padding: '90px 0', position: 'relative' }}>
       <div className="container">
         <div className="section-center reveal-on-scroll">
           <h2 className="section-title">
-            À Propos de Laurent G-M Manouaba
+            {c.title}
           </h2>
           <p className="section-subtitle">
-            Une alliance rare entre rigueur scientifique, maîtrise technique pluridisciplinaire
-            et engagement humain pour une technologie utile et accessible.
+            {c.subtitle}
           </p>
         </div>
 
@@ -41,7 +96,7 @@ export function AboutSection({ onOpenBooking }) {
             >
               <img
                 src="/assets/avatar-suit.png"
-                alt="Laurent G-M Manouaba en costume de travail"
+                alt="Consultant expert en technologies et stratégie opérationnelle"
                 style={{
                   width: '100%',
                   aspectRatio: '4 / 3',
@@ -67,7 +122,7 @@ export function AboutSection({ onOpenBooking }) {
             >
               <img
                 src="/assets/workshop-meeting.jpg"
-                alt="Session d'atelier de travail en équipe avec Laurent Manouaba"
+                alt="Session d'atelier de travail en équipe"
                 style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
               />
             </div>
@@ -84,31 +139,20 @@ export function AboutSection({ onOpenBooking }) {
                 lineHeight: 1.25
               }}
             >
-              « La technologie n’a de valeur que si elle libère le potentiel humain. »
+              {c.quote}
             </h3>
 
             <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>
-              Passionné de recherche scientifique appliquée et de dynamique entrepreneuriale,{' '}
-              <strong>Laurent G-M Manouaba</strong> intervient comme consultant indépendant,
-              partenaire de cabinets spécialisés ou conseiller de direction.
+              {c.p1}
             </p>
 
             <p style={{ fontSize: '0.96rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '24px' }}>
-              Son approche se distingue par une solide formation multidisciplinaire couvrant :
-              l’<strong>informatique de pointe</strong>, l’<strong>électricité & l’électronique</strong>,
-              le <strong>génie des procédés</strong>, les <strong>techniques d’analyse statistique</strong> et
-              le <strong>management de l’innovation</strong>. Cette transversalité lui permet de dialoguer
-              aussi bien avec des ingénieurs d'infrastructure qu'avec des directeurs financiers.
+              {c.p2}
             </p>
 
             {/* Core Values */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px', marginBottom: '28px' }}>
-              {[
-                { title: 'Plaisir & Passion', desc: 'L’enthousiasme de résoudre des verrous complexes.' },
-                { title: 'Excellence Rigueur', desc: 'Zéro approximation sur la sécurité et le code.' },
-                { title: 'Collectif & Synergie', desc: 'Valorisation de l’intelligence d’équipe locale.' },
-                { title: 'Honnêteté & Transparence', desc: 'Parler vrai sur la rentabilité réelle des projets.' }
-              ].map((val) => (
+              {c.values.map((val) => (
                 <div
                   key={val.title}
                   style={{
@@ -129,10 +173,10 @@ export function AboutSection({ onOpenBooking }) {
             </div>
 
             <button
-              onClick={() => onOpenBooking('Échange direct avec Laurent Manouaba')}
+              onClick={() => onOpenBooking(c.ctaBtn)}
               className="btn btn-whatsapp"
             >
-              <span>Discuter de votre projet avec Laurent Manouaba</span>
+              <span>{c.ctaBtn}</span>
             </button>
           </div>
         </div>
@@ -141,15 +185,15 @@ export function AboutSection({ onOpenBooking }) {
         <div className="reveal-on-scroll">
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px' }}>
-              Secteurs d’Activité & Domaines d’Impact
+              {c.sectorsTitle}
             </h3>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              Une adaptation prouvée aux contraintes réglementaires et opérationnelles de chaque industrie.
+              {c.sectorsSub}
             </p>
           </div>
 
           <div className="grid-3">
-            {SECTORS.map((sec) => (
+            {sectors.map((sec) => (
               <div
                 key={sec.name}
                 className="card"
@@ -189,3 +233,4 @@ export function AboutSection({ onOpenBooking }) {
     </section>
   );
 }
+

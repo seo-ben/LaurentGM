@@ -1,9 +1,65 @@
 import React from 'react';
 import { ShieldCheck, MessageSquare, CheckCircle, ExternalLink, MapPin } from 'lucide-react';
-import { CONTACT_INFO, SECTORS, METRICS } from '../data/content';
+import { CONTACT_INFO } from '../data/content';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function AboutPage({ onOpenBooking }) {
-  const competencies = [
+  const { metrics, sectors, lang } = useLanguage();
+
+  const isEn = lang === 'en';
+  const isPt = lang === 'pt';
+
+  const competencies = isEn ? [
+    {
+      title: "Data Privacy & Governance (GDPR / LGPD)",
+      desc: "Strict isolation of sensitive corporate data, regulatory compliance, and ethical governance of algorithmic pipelines."
+    },
+    {
+      title: "System Vulnerability & Architecture Audits",
+      desc: "In-depth audit of technical, infrastructural, and human vulnerabilities to eliminate cyber risks before scale."
+    },
+    {
+      title: "Organizational Agility & Technology Innovation",
+      desc: "Modern engineering workflows, rapid adaptation to market disruptions, and revamped go-to-market technology stacks."
+    },
+    {
+      title: "Massive Data Analytics & Datafication",
+      desc: "Transforming raw company databases into actionable predictive indicators and quantifiable valuation assets."
+    },
+    {
+      title: "Systemic Problem-Solving & Synthesis",
+      desc: "Ability to deconstruct high-complexity industrial problems from all angles to engineer direct, executable solutions."
+    },
+    {
+      title: "Enterprise Infrastructure & Network Security",
+      desc: "Hardening cloud architectures, IoT communication protocols, and cryptographic information exchange pipelines."
+    }
+  ] : isPt ? [
+    {
+      title: "Privacidade de Dados & Governança (LGPD / GDPR)",
+      desc: "Proteção rigorosa de dados estratégicos, conformidade regulatória e governança ética dos fluxos informacionais."
+    },
+    {
+      title: "Análise de Vulnerabilidade e Auditoria de Sistemas",
+      desc: "Auditoria aprofundada de falhas técnicas, infraestruturais e humanas para mitigar riscos cibernéticos críticos."
+    },
+    {
+      title: "Inovação & Agilidade Organizacional",
+      desc: "Novas metodologias de trabalho, resposta ágil a transformações de mercado e modernização de modelos operacionais."
+    },
+    {
+      title: "Análise de Dados Massivos & Dataficação",
+      desc: "Extração de métricas preditivas exploráveis e monetização do patrimônio informacional corporativo."
+    },
+    {
+      title: "Resolução Sistêmica de Problemas Complexos",
+      desc: "Capacidade de decompor impasses multidimensionais para formular soluções diretas, simples e de alto impacto."
+    },
+    {
+      title: "Segurança de Redes e Infraestruturas Críticas",
+      desc: "Blindagem de arquiteturas computacionais, redes comunicantes e protocolos seguros de troca de informações."
+    }
+  ] : [
     {
       title: "Confidentialité des données & RGPD",
       desc: "Protection stricte des données sensibles, mise en conformité réglementaire et gouvernance éthique des flux de données."
@@ -30,23 +86,47 @@ export function AboutPage({ onOpenBooking }) {
     }
   ];
 
+  const values = isEn ? [
+    { title: 'Passion', desc: 'Genuine enthusiasm for breaking through complex engineering bottlenecks.' },
+    { title: 'Excellence', desc: 'Relentless quest for mathematical accuracy and operational discipline.' },
+    { title: 'Collective', desc: 'Empowering internal teams so that transformations remain durable.' },
+    { title: 'Integrity', desc: 'Absolute transparency regarding tool limitations and financial feasibility.' }
+  ] : isPt ? [
+    { title: 'Entusiasmo', desc: 'Verdadeira paixão em solucionar gargalos técnicos aparentemente intransponíveis.' },
+    { title: 'Excelência', desc: 'Busca permanente de precisão técnica e rigor operacional implacável.' },
+    { title: 'Coletivo', desc: 'Engajar as equipes internas para garantir transformações sustentáveis.' },
+    { title: 'Transparência', desc: 'Franqueza absoluta sobre limites técnicos e viabilidade econômica real.' }
+  ] : [
+    { title: 'Plaisir', desc: 'Prendre un réel enthousiasme à résoudre des verrous réputés insurmontables.' },
+    { title: 'Excellence', desc: 'Recherche permanente de la justesse technique et de la rigueur opérationnelle.' },
+    { title: 'Collectif', desc: 'Embarquer les collaborateurs pour que la transformation vive durablement.' },
+    { title: 'Honnêteté', desc: 'Une franchise absolue sur les limites d’un outil ou la viabilité d’un projet.' }
+  ];
+
   return (
     <div>
-      {/* Page Header (NO LABELS ABOVE TITLE) */}
+      {/* Page Header */}
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">
-            À Propos de Laurent G-M Manouaba
+            {isEn
+              ? 'About our Advisory Firm'
+              : isPt
+              ? 'Sobre nossa Consultoria'
+              : 'À Propos de notre Cabinet'}
           </h1>
           <p className="page-description">
-            Consultant indépendant en innovations technologiques, combinant recherche scientifique appliquée,
-            transversalité technique et culture d'exécution sur le terrain.
+            {isEn
+              ? 'Specialized strategic advisory firm in technological innovations, artificial intelligence, and operational profitability.'
+              : isPt
+              ? 'Consultoria estratégica especializada em inovações tecnológicas, inteligência artificial e lucratividade operacional.'
+              : "Cabinet de conseil stratégique en innovations technologiques, combinant recherche scientifique appliquée, transversalité technique et culture d'exécution sur le terrain."}
           </p>
         </div>
       </div>
 
       <div className="container" style={{ paddingBottom: '90px' }}>
-        {/* Story & Visuals (NO LABELS ABOVE TITLES) */}
+        {/* Story & Visuals */}
         <div
           style={{
             display: 'grid',
@@ -71,7 +151,7 @@ export function AboutPage({ onOpenBooking }) {
             >
               <img
                 src="/assets/avatar-suit.png"
-                alt="Laurent G-M Manouaba en tenue de travail"
+                alt="Senior Strategic Consultant"
                 style={{
                   width: '100%',
                   aspectRatio: '4 / 3',
@@ -97,7 +177,7 @@ export function AboutPage({ onOpenBooking }) {
             >
               <img
                 src="/assets/workshop-meeting.jpg"
-                alt="Atelier de travail collaboratif"
+                alt={isEn ? "Collaborative workshop session" : isPt ? "Sessão de trabalho colaborativo" : "Atelier de travail collaboratif"}
                 style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
               />
             </div>
@@ -106,32 +186,40 @@ export function AboutPage({ onOpenBooking }) {
           {/* Narrative avec glissement depuis la droite */}
           <div className="reveal-right">
             <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '16px', lineHeight: 1.25 }}>
-              Une mission claire : Faciliter l'intégration technologique par l'innovation
+              {isEn
+                ? "A Clear Mandate: Transforming Technology Innovations into Bottom-Line Profitability"
+                : isPt
+                ? "Um Mandato Claro: Transformar Inovações Tecnológicas em Lucratividade Real"
+                : "Une mission claire : Faciliter l'intégration technologique par l'innovation"}
             </h2>
 
             <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>
-              Passionné de recherche scientifique et de sciences computationnelles, <strong>Laurent G-M Manouaba</strong> aide
-              les organisations à traverser les tournants technologiques majeurs sans perdre de vue la réalité économique et humaine.
+              {isEn
+                ? "Dedicated to applied research and computational systems, our advisory firm guides forward-looking enterprises through critical technology transitions without compromising operational reality or human capital."
+                : isPt
+                ? "Dedicada à pesquisa aplicada e sistemas computacionais, nossa consultoria orienta empresas em transições tecnológicas cruciais, preservando a realidade operacional e o capital humano."
+                : "Dédié à la recherche appliquée et aux sciences computationnelles, notre cabinet accompagne les organisations à franchir les tournants technologiques majeurs sans perdre de vue la réalité économique et humaine."}
             </p>
 
             <p style={{ fontSize: '0.96rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '24px' }}>
-              Sa méthode réunit une vision stratégique globale et un ancrage local fort. Grâce à une formation pluridisciplinaire
-              (informatique, électricité, électronique, techniques d’analyse, génie des procédés), il intervient
-              comme un traducteur entre les impératifs des ingénieurs et les objectifs financiers des dirigeants.
+              {isEn
+                ? "Our methodology combines global strategic foresight with rigorous field execution. Spanning generative AI, edge computing, cybersecurity, and financial modeling, we act as an executive bridge between engineering teams and boardroom ROI imperatives."
+                : isPt
+                ? "Nossa metodologia combina visão estratégica global com execução precisa em campo. Integrando IA generativa, computação em borda, segurança cibernética e modelagem financeira, atuamos como ponte entre as equipes técnicas e os imperativos de ROI dos executivos."
+                : "Notre méthode réunit une vision stratégique globale et un ancrage local fort. Grâce à une expertise pluridisciplinaire (informatique, électronique, calcul distribué, modélisation économique), nous intervenons comme un traducteur entre les impératifs des ingénieurs et les objectifs financiers des dirigeants."}
             </p>
 
             {/* 4 Valeurs fondamentales */}
             <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '14px' }}>
-              Les 4 Valeurs Cardinaux du Cabinet
+              {isEn
+                ? "Core Values of our Advisory Practice"
+                : isPt
+                ? "Os 4 Pilares de Valor da Consultoria"
+                : "Les 4 Valeurs Cardinaux du Cabinet"}
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '28px' }}>
-              {[
-                { title: 'Plaisir', desc: 'Prendre un réel enthousiasme à résoudre des verrous réputés insurmontables.' },
-                { title: 'Excellence', desc: 'Recherche permanente de la justesse technique et de la rigueur opérationnelle.' },
-                { title: 'Collectif', desc: 'Embarquer les collaborateurs pour que la transformation vive durablement.' },
-                { title: 'Honnêteté', desc: 'Une franchise absolue sur les limites d’un outil ou la viabilité d’un projet.' }
-              ].map((v) => (
+              {values.map((v) => (
                 <div
                   key={v.title}
                   style={{
@@ -152,11 +240,11 @@ export function AboutPage({ onOpenBooking }) {
             </div>
 
             <button
-              onClick={() => onOpenBooking('Échange direct avec Laurent Manouaba')}
+              onClick={() => onOpenBooking(isEn ? 'Direct Discussion' : isPt ? 'Conversa Direta' : 'Échange direct')}
               className="btn btn-whatsapp"
             >
               <MessageSquare size={16} />
-              <span>Échanger avec Laurent Manouaba</span>
+              <span>{isEn ? 'Schedule a Discussion' : isPt ? 'Iniciar Conversa' : 'Échanger'}</span>
             </button>
           </div>
         </div>
@@ -179,7 +267,7 @@ export function AboutPage({ onOpenBooking }) {
               textAlign: 'center'
             }}
           >
-            {METRICS.map((m) => (
+            {(metrics || []).map((m) => (
               <div key={m.label}>
                 <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.4rem', fontWeight: '800', color: 'var(--color-brand-primary)', marginBottom: '4px' }}>
                   {m.value}
@@ -195,14 +283,22 @@ export function AboutPage({ onOpenBooking }) {
           </div>
         </div>
 
-        {/* Domaines de compétence détaillés (NO LABELS ABOVE TITLES) */}
+        {/* Domaines de compétence détaillés */}
         <div style={{ marginBottom: '64px' }}>
           <div className="section-center" style={{ marginBottom: '32px' }}>
             <h2 className="section-title">
-              Domaines de Compétence Stratégiques
+              {isEn
+                ? "Strategic Core Capabilities"
+                : isPt
+                ? "Domínios de Competência Estratégica"
+                : "Domaines de Compétence Stratégiques"}
             </h2>
             <p className="section-subtitle">
-              Un savoir-faire éprouvé pour sécuriser vos systèmes et débloquer de nouveaux marchés.
+              {isEn
+                ? "Proven field expertise to secure architectures and unlock profitable new business models."
+                : isPt
+                ? "Expertise comprovada para proteger seus sistemas e desbloquear novos mercados lucrativos."
+                : "Un savoir-faire éprouvé pour sécuriser vos systèmes et débloquer de nouveaux marchés."}
             </p>
           </div>
 
@@ -224,15 +320,23 @@ export function AboutPage({ onOpenBooking }) {
         <div>
           <div className="section-center" style={{ marginBottom: '32px' }}>
             <h2 className="section-title">
-              Secteurs d’Intervention de Référence
+              {isEn
+                ? "Benchmark Industry Sectors"
+                : isPt
+                ? "Setores de Atuação de Referência"
+                : "Secteurs d’Intervention de Référence"}
             </h2>
             <p className="section-subtitle">
-              Une expérience étendue à travers les filières industrielles, financières et technologiques.
+              {isEn
+                ? "Extensive consulting track record across industrial, financial, and deep-tech sectors."
+                : isPt
+                ? "Experiência consolidada em setores industriais, financeiros e tecnológicos globais."
+                : "Une expérience étendue à travers les filières industrielles, financières et technologiques."}
             </p>
           </div>
 
           <div className="grid-3">
-            {SECTORS.map((s) => (
+            {(sectors || []).map((s) => (
               <div key={s.name} className="card reveal-on-scroll" style={{ backgroundColor: '#ffffff', padding: '20px' }}>
                 <h3 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '4px' }}>
                   {s.name}
