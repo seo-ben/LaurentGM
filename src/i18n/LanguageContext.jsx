@@ -17,7 +17,7 @@ import {
 export const AVAILABLE_LANGUAGES = [
   { code: 'fr', label: 'Français', flag: '🇫🇷', short: 'FR' },
   { code: 'en', label: 'English', flag: '🇺🇸', short: 'EN' },
-  { code: 'pt', label: 'Português (Brasil)', flag: '🇧🇷', short: 'BR' }
+  { code: 'pt', label: 'Brasil', flag: '🇧🇷', short: 'BR' }
 ];
 
 const LanguageContext = createContext(null);
