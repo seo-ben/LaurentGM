@@ -6,30 +6,40 @@
 
 const STORAGE_KEY = 'lgm_stripe_config';
 
+// Valeurs de secours en dur (utilisées automatiquement si non trouvées dans le .env)
+const FALLBACK_PUBLISHABLE_KEY = 'pk_test_51TBhNB02Ps5pF981HdEeGzZx4flN5fj8wAZ8eqMrlDGDaDQbCdfLKB6t347QcRQlzAP7jocfqM1XEtNQBW2T8YSS00EWyoR3nG';
+const FALLBACK_PAYMENT_LINK = 'https://buy.stripe.com/test_bJe14f75JfJC3IqbPZ43S00';
+
 const DEFAULT_CONFIG = {
-  publishableKey: '',
+  publishableKey: FALLBACK_PUBLISHABLE_KEY,
   secretKeyConfigured: false,
-  paymentLinkUrl: '', // Configurable via .env (VITE_STRIPE_PAYMENT_LINK) ou Admin
+  paymentLinkUrl: FALLBACK_PAYMENT_LINK,
   appointmentPrice: 90, // Tarif par défaut d'une prise de RDV / consultation (90 $)
   currency: 'USD',
   currencySymbol: '$',
   appointmentDuration: '1 heure de cadrage stratégique + 48h de suivi',
-  mode: 'live',
+  mode: 'test',
   enabled: true
 };
 
 /**
- * Récupère la configuration Stripe active en priorité depuis le .env
+ * Récupère la configuration Stripe active :
+ * 1. Priorité au .env
+ * 2. Si non trouvé dans le .env, utilise automatiquement la valeur de secours en dur
  */
 export function getStripeConfig() {
-  const envPublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
-  const envPaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK || '';
+  const envPublishableKey = (import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '').trim();
+  const envPaymentLink = (import.meta.env.VITE_STRIPE_PAYMENT_LINK || '').trim();
+
+  // Résolution avec fallback automatique
+  const activePublishableKey = envPublishableKey || FALLBACK_PUBLISHABLE_KEY;
+  const activePaymentLink = (envPaymentLink && envPaymentLink.length > 10) ? envPaymentLink : FALLBACK_PAYMENT_LINK;
 
   if (typeof window === 'undefined') {
     return {
       ...DEFAULT_CONFIG,
-      publishableKey: envPublishableKey,
-      paymentLinkUrl: envPaymentLink
+      publishableKey: activePublishableKey,
+      paymentLinkUrl: activePaymentLink
     };
   }
 
@@ -37,14 +47,15 @@ export function getStripeConfig() {
     const raw = localStorage.getItem(STORAGE_KEY);
     const stored = raw ? JSON.parse(raw) : {};
     
-    // Priorité : stockage admin si personnalisé, sinon variable d'environnement .env
+    // Si personnalisé dans l'espace Admin Studio, utilise la valeur stockée,
+    // sinon prend la variable .env, sinon le fallback en dur
     const publishableKey = (stored.publishableKey && stored.publishableKey.trim()) 
-      ? stored.publishableKey 
-      : envPublishableKey;
+      ? stored.publishableKey.trim() 
+      : activePublishableKey;
 
     const paymentLinkUrl = (stored.paymentLinkUrl && stored.paymentLinkUrl.trim().length > 10) 
-      ? stored.paymentLinkUrl 
-      : envPaymentLink;
+      ? stored.paymentLinkUrl.trim() 
+      : activePaymentLink;
 
     const detectedMode = stored.mode || (publishableKey.startsWith('pk_test_') ? 'test' : 'live');
 
@@ -59,8 +70,8 @@ export function getStripeConfig() {
     console.error('Erreur lecture configuration Stripe :', e);
     return {
       ...DEFAULT_CONFIG,
-      publishableKey: envPublishableKey,
-      paymentLinkUrl: envPaymentLink
+      publishableKey: activePublishableKey,
+      paymentLinkUrl: activePaymentLink
     };
   }
 }

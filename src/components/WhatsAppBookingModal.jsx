@@ -170,48 +170,13 @@ export function WhatsAppBookingModal({
   };
 
   const executeCardPayment = () => {
-    if (stripeConfig.paymentLinkUrl && stripeConfig.paymentLinkUrl.trim().length > 10) {
-      window.open(stripeConfig.paymentLinkUrl, '_blank', 'noopener,noreferrer');
-      setIsSent(true);
-      setIsConfirmingPayment(false);
-    } else {
-      const isEn = lang === 'en';
-      const isPt = lang === 'pt';
+    const paymentUrl = (stripeConfig.paymentLinkUrl && stripeConfig.paymentLinkUrl.trim().length > 10)
+      ? stripeConfig.paymentLinkUrl.trim()
+      : 'https://buy.stripe.com/test_bJe14f75JfJC3IqbPZ43S00';
 
-      const paymentMsg = [
-        isEn ? "Hello," : isPt ? "Olá," : "Bonjour,",
-        "",
-        isEn
-          ? `I would like to proceed with the direct payment of my strategic consultation (${stripeConfig.appointmentPrice} ${stripeConfig.currencySymbol}) by credit card:`
-          : isPt
-          ? `Desejo realizar o pagamento direto da minha consulta estratégica (${stripeConfig.appointmentPrice} ${stripeConfig.currencySymbol}) por cartão de crédito:`
-          : `Je souhaite procéder au règlement direct de ma consultation stratégique (${stripeConfig.appointmentPrice} $) par carte bancaire :`,
-        `*${isEn ? 'Topic' : isPt ? 'Assunto' : 'Objet'} :* ${subject || (isEn ? 'Strategic Consultation' : isPt ? 'Consulta Estratégica' : 'Consultation Stratégique')}`,
-        name ? `*${isEn ? 'Requester' : isPt ? 'Solicitante' : 'Demandeur'} :* ${name}` : null,
-        company ? `*${isEn ? 'Organization' : isPt ? 'Empresa' : 'Structure'} :* ${company}` : null,
-        `*${isEn ? 'Preferred Slot' : isPt ? 'Horário Desejado' : 'Créneau souhaité'} :* ${slot}`,
-        note ? `*${isEn ? 'Details' : isPt ? 'Detalhes' : 'Détails'} :* ${note}` : null,
-        `*${isEn ? 'Request' : isPt ? 'Solicitação' : 'Demande'} :* ${
-          isEn
-            ? 'Please provide the direct secure card payment link.'
-            : isPt
-            ? 'Por favor, envie o link seguro para pagamento direto com cartão.'
-            : 'Merci de me transmettre le lien direct de paiement par carte sécurisée.'
-        }`,
-        "",
-        isEn
-          ? "_Sent via strategic consulting platform_"
-          : isPt
-          ? "_Enviado através da plataforma de consultoria estratégica_"
-          : "_Envoyé via la plateforme de conseil stratégique_"
-      ].filter(Boolean).join('\n');
-
-      const encoded = encodeURIComponent(paymentMsg);
-      const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsappNumber}?text=${encoded}`;
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setIsSent(true);
-      setIsConfirmingPayment(false);
-    }
+    window.open(paymentUrl, '_blank', 'noopener,noreferrer');
+    setIsSent(true);
+    setIsConfirmingPayment(false);
   };
 
   const isPlanBooking = Boolean(bookingData?.planName);
@@ -567,10 +532,10 @@ export function WhatsAppBookingModal({
                   <MessageSquare size={17} />
                   <span>
                     {lang === 'en'
-                      ? `Confirm slot first on WhatsApp (${CONTACT_INFO.whatsappDisplay})`
+                      ? 'Confirm slot first on WhatsApp'
                       : lang === 'pt'
-                      ? `Confirmar horário primeiro no WhatsApp (${CONTACT_INFO.whatsappDisplay})`
-                      : `Valider mon créneau d'abord sur WhatsApp (${CONTACT_INFO.whatsappDisplay})`}
+                      ? 'Confirmar horário primeiro no WhatsApp'
+                      : "Valider mon créneau d'abord sur WhatsApp"}
                   </span>
                 </button>
 

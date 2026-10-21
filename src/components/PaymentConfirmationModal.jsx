@@ -62,43 +62,12 @@ export function PaymentConfirmationModal({
 
   // Action 1: Paiement par Carte
   const handlePayByCard = () => {
-    if (stripeConfig.paymentLinkUrl && stripeConfig.paymentLinkUrl.trim().length > 10) {
-      window.open(stripeConfig.paymentLinkUrl, '_blank', 'noopener,noreferrer');
-      onClose();
-    } else {
-      const lines = [
-        isEn ? "Hello," : isPt ? "Olá," : "Bonjour,",
-        "",
-        isEn
-          ? `I would like to proceed with the direct payment of my strategic consultation (${price} ${currencySymbol}) by credit card:`
-          : isPt
-          ? `Desejo realizar o pagamento direto da minha consulta estratégica (${price} ${currencySymbol}) por cartão de crédito:`
-          : `Je souhaite régler ma consultation stratégique (${price} ${currencySymbol}) par carte bancaire :`,
-        `*${isEn ? 'Topic' : isPt ? 'Assunto' : 'Objet'} :* ${subject}`,
-        name ? `*${isEn ? 'Requester' : isPt ? 'Solicitante' : 'Demandeur'} :* ${name}` : null,
-        company ? `*${isEn ? 'Organization' : isPt ? 'Empresa' : 'Structure'} :* ${company}` : null,
-        phone ? `*${isEn ? 'Contact' : isPt ? 'Contato' : 'Contact'} :* ${phone}` : null,
-        slot ? `*${isEn ? 'Preferred Slot' : isPt ? 'Horário Desejado' : 'Créneau souhaité'} :* ${slot}` : null,
-        note ? `*${isEn ? 'Details' : isPt ? 'Detalhes' : 'Détails'} :* ${note}` : null,
-        `*${isEn ? 'Request' : isPt ? 'Solicitação' : 'Demande'} :* ${
-          isEn
-            ? 'Please provide the direct secure card payment link.'
-            : isPt
-            ? 'Por favor, envie o link seguro para pagamento com cartão.'
-            : 'Merci de me transmettre le lien de paiement direct par carte sécurisée.'
-        }`,
-        "",
-        isEn
-          ? "_Sent via strategic consulting platform_"
-          : isPt
-          ? "_Enviado através da plataforma de consultoria estratégica_"
-          : "_Envoyé via la plateforme de conseil stratégique_"
-      ].filter(Boolean);
+    const paymentUrl = (stripeConfig.paymentLinkUrl && stripeConfig.paymentLinkUrl.trim().length > 10)
+      ? stripeConfig.paymentLinkUrl.trim()
+      : 'https://buy.stripe.com/test_bJe14f75JfJC3IqbPZ43S00';
 
-      const url = `https://wa.me/${CONTACT_INFO.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-      onClose();
-    }
+    window.open(paymentUrl, '_blank', 'noopener,noreferrer');
+    onClose();
   };
 
   // Action 2: Transmettre sur WhatsApp
